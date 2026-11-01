@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jason Marks · Mission Control</title>
+<meta name="description" content="Jason Marks — BYU Information Systems + Statistics. Data engineering, ML, and full-stack builds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05070d; --panel:rgba(14,20,32,.72); --line:#1b2638; --line2:#2a3a55;
+  --text:#e8eef7; --muted:#7f8ea6; --amber:#ffb547; --cyan:#3be8ff; --green:#5cff9d; --red:#ff5c7a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Space Grotesk",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"JetBrains Mono",monospace}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+::selection{background:var(--amber);color:#000}
+
+/* backgrounds */
+#stars{position:fixed;inset:0;z-index:0}
+.grid-bg{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.25;mask-image:radial-gradient(ellipse at 50% 30%,#000 20%,transparent 75%)}
+.glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;
+  background:radial-gradient(circle,rgba(59,232,255,.10),transparent 60%);transform:translate(-50%,-50%);transition:opacity .3s}
+
+/* top status bar */
+.status{position:sticky;top:0;z-index:20;background:rgba(5,7,13,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.status .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;font-size:12px}
+.status .id{display:flex;align-items:center;gap:10px;color:var(--amber);font-weight:700;letter-spacing:.08em}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.status nav{display:flex;gap:22px;color:var(--muted)}
+.status nav a{transition:.15s}
+.status nav a:hover{color:var(--cyan)}
+.status nav a span{color:var(--line2)}
+.clock{color:var(--muted)}
+
+/* hero */
+header{min-height:calc(100vh - 56px);display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:40px;padding:60px 0}
+.eyebrow{font-size:12px;color:var(--cyan);letter-spacing:.2em;margin-bottom:18px}
+h1{font-size:clamp(46px,7.5vw,92px);line-height:.95;font-weight:700;letter-spacing:-.035em}
+h1 .out{color:transparent;-webkit-text-stroke:1.5px var(--amber)}
+.type{margin:26px 0 30px;font-size:15px;color:var(--muted);min-height:48px}
+.type b{color:var(--green);font-weight:500}
+.caret{display:inline-block;width:9px;height:18px;background:var(--amber);vertical-align:-3px;animation:pulse 1s steps(1) infinite}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:"JetBrains Mono",monospace;font-size:13px;padding:12px 18px;border:1px solid var(--line2);
+  border-radius:4px;position:relative;transition:.2s;background:var(--panel)}
+.btn::before{content:"";position:absolute;top:-1px;left:-1px;width:8px;height:8px;border-top:2px solid var(--amber);border-left:2px solid var(--amber)}
+.btn::after{content:"";position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-bottom:2px solid var(--amber);border-right:2px solid var(--amber)}
+.btn:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-2px)}
+.btn.go{background:var(--amber);color:#120a00;border-color:var(--amber);font-weight:700}
+.btn.go:hover{color:#120a00;box-shadow:0 0 30px rgba(255,181,71,.35)}
+
+/* orbit radar */
+.radar{position:relative;aspect-ratio:1;max-width:440px;width:100%;justify-self:center}
+.radar .ring{position:absolute;inset:0;border:1px dashed var(--line2);border-radius:50%}
+.radar .ring:nth-child(2){inset:15%;border-style:solid;border-color:var(--line)}
+.radar .ring:nth-child(3){inset:32%;border-color:var(--line2)}
+.radar .sweep{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(59,232,255,.28),transparent 25%);animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.radar .core{position:absolute;inset:41%;border-radius:50%;background:radial-gradient(circle,var(--amber),#a8590a);
+  box-shadow:0 0 60px rgba(255,181,71,.5);display:grid;place-items:center;font-weight:700;color:#1a0d00;font-size:clamp(16px,3vw,26px)}
+.sat{position:absolute;top:50%;left:50%;font-size:11px;color:var(--cyan);white-space:nowrap}
+.sat i{display:inline-block;width:7px;height:7px;background:var(--cyan);border-radius:50%;margin-right:6px;box-shadow:0 0 8px var(--cyan)}
+
+/* telemetry */
+.telemetry{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(6px)}
+.telemetry div{padding:26px 22px;border-right:1px solid var(--line)}
+.telemetry div:last-child{border:none}
+.telemetry .n{font-size:38px;font-weight:700;color:var(--amber);line-height:1}
+.telemetry .l{font-size:11px;color:var(--muted);letter-spacing:.12em;margin-top:8px}
+
+section{padding:110px 0}
+.sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:46px}
+.sec-head .num{font-size:13px;color:var(--amber)}
+.sec-head h2{font-size:clamp(32px,4.5vw,52px);letter-spacing:-.02em;line-height:1}
+.sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;backdrop-filter:blur(6px);position:relative}
+.panel .bar{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--line);font-size:11px;color:var(--muted);letter-spacing:.1em}
+.panel .bar .ok{color:var(--green)}
+
+/* about */
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+.about .body{padding:28px;font-size:17px;color:#c6d1e2}
+.about .body p+p{margin-top:16px}
+.about .body em{color:var(--amber);font-style:normal}
+.kv{padding:8px 0}
+.kv div{display:flex;justify-content:space-between;padding:12px 22px;border-bottom:1px dashed var(--line);font-size:13px}
+.kv div:last-child{border:none}
+.kv b{color:var(--muted);font-weight:400}
+
+/* missions */
+.featured{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-bottom:60px}
+.mission{padding:0;overflow:hidden;transition:.25s}
+.mission:hover{border-color:var(--amber);transform:translateY(-4px);box-shadow:0 20px 50px -20px rgba(255,181,71,.25)}
+.mission .inner{padding:26px}
+.mission h3{font-size:24px;margin-bottom:4px;letter-spacing:-.01em}
+.mission .role{font-size:12px;color:var(--cyan);margin-bottom:14px}
+.mission ul{list-style:none;color:var(--muted);font-size:14px;margin-bottom:18px}
+.mission li{padding-left:18px;position:relative;margin-bottom:6px}
+.mission li::before{content:"▸";position:absolute;left:0;color:var(--amber)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chips span{font-family:"JetBrains Mono",monospace;font-size:11px;padding:4px 9px;border:1px solid var(--line2);border-radius:3px;color:var(--cyan)}
+.links{display:flex;gap:18px;font-family:"JetBrains Mono",monospace;font-size:13px}
+.links a{color:var(--amber)}
+.links a:hover{text-decoration:underline}
+
+.repo-head{font-size:13px;color:var(--muted);margin-bottom:18px}
+.repo-head b{color:var(--green);font-weight:500}
+.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.repo{padding:18px;transition:.2s;display:flex;flex-direction:column}
+.repo:hover{border-color:var(--cyan)}
+.repo h4{font-size:15px;margin-bottom:4px;word-break:break-word}
+.repo .meta{font-size:11px;color:var(--muted);margin-bottom:10px}
+.repo p{font-size:13px;color:var(--muted);flex:1;margin-bottom:12px}
+
+/* systems / skills */
+.systems{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.sys{padding:22px}
+.sys h4{font-size:11px;letter-spacing:.16em;color:var(--amber);margin-bottom:14px}
+.sys .item{display:flex;align-items:center;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sys .item:last-child{border:none}
+.sys .item i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+
+/* flight log */
+.log{position:relative;padding-left:34px}
+.log::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:1px;background:linear-gradient(var(--amber),var(--cyan),transparent)}
+.entry{position:relative;margin-bottom:22px}
+.entry::before{content:"";position:absolute;left:-31px;top:24px;width:11px;height:11px;border:2px solid var(--amber);background:var(--bg);transform:rotate(45deg)}
+.entry .inner{padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:6px 20px}
+.entry h3{font-size:20px}
+.entry .when{font-size:12px;color:var(--muted);text-align:right}
+.entry .org{font-size:13px;color:var(--cyan);grid-column:1/-1}
+.entry ul{grid-column:1/-1;list-style:none;color:var(--muted);font-size:14px;margin-top:8px}
+.entry li{padding-left:18px;position:relative;margin-bottom:4px}
+.entry li::before{content:"›";position:absolute;left:2px;color:var(--amber)}
+.entry li b{color:var(--text);font-weight:500}
+
+/* contact */
+.contact{text-align:center;padding:70px 30px}
+.contact h2{font-size:clamp(36px,6vw,72px);letter-spacing:-.03em;line-height:1;margin:14px 0 18px}
+.contact h2 span{color:var(--amber)}
+.contact p{color:var(--muted);max-width:560px;margin:0 auto 30px}
+.contact .btns{justify-content:center}
+
+footer{border-top:1px solid var(--line);padding:26px 0;font-size:12px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  header{grid-template-columns:1fr;min-height:auto;padding:50px 0 70px}
+  .radar{max-width:300px;order:-1}
+  .telemetry{grid-template-columns:repeat(2,1fr)}
+  .telemetry div:nth-child(2){border-right:none}
+  .telemetry div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .about,.featured{grid-template-columns:1fr}
+  .systems{grid-template-columns:repeat(2,1fr)}
+  .status nav{display:none}
+}
+@media(max-width:520px){.systems{grid-template-columns:1fr}.entry .inner{grid-template-columns:1fr}.entry .when{text-align:left}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="grid-bg"></div>
+<div class="glow" id="glow"></div>
+
+<div class="status">
+  <div class="wrap">
+    <div class="id mono"><span class="dot"></span>JM-22 // ONLINE</div>
+    <nav class="mono">
+      <a href="#about"><span>01</span> about</a>
+      <a href="#missions"><span>02</span> missions</a>
+      <a href="#systems"><span>03</span> systems</a>
+      <a href="#log"><span>04</span> flight log</a>
+      <a href="#contact"><span>05</span> contact</a>
+    </nav>
+    <div class="clock mono" id="clock">PROVO, UT</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow mono">// INFORMATION SYSTEMS · STATISTICS · BYU</p>
+      <h1>Jason<br><span class="out">Marks</span></h1>
+      <p class="type mono" id="type"></p>
+      <div class="btns">
+        <a class="btn go" href="#missions">▸ View missions</a>
+        <a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">resume.pdf</a>
+        <a class="btn" id="gh-btn" target="_blank">github</a>
+        <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">linkedin</a>
+      </div>
+    </div>
+    <div class="radar" id="radar">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="sweep"></div>
+      <div class="core mono">JM</div>
+    </div>
+  </header>
+
+  <div class="telemetry reveal">
+    <div><div class="n mono" data-count="3.82" data-dec="2">0</div><div class="l mono">GPA / 4.00</div></div>
+    <div><div class="n mono" data-count="50" data-suf="+">0</div><div class="l mono">ENTITIES CONSOLIDATED</div></div>
+    <div><div class="n mono" data-count="700" data-suf="+">0</div><div class="l mono">INVESTOR RECORDS</div></div>
+    <div><div class="n mono" data-count="100" data-pre="$" data-suf="K+">0</div><div class="l mono">MISSTATEMENTS CUT / QTR</div></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head reveal"><span class="num mono">01</span><h2>About</h2><span class="rule"></span></div>
+    <div class="about">
+      <div class="panel reveal">
+        <div class="bar mono"><span>OPERATOR_PROFILE.md</span><span class="ok">● VERIFIED</span></div>
+        <div class="body">
+          <p>I'm an <em>Information Systems</em> student at BYU's Marriott School with a minor in <em>Statistics</em>. I'm aiming for data engineering, ML, and mission systems software.</p>
+          <p>My day jobs are in accounting: consolidating financials for 50+ entities at Reef Capital and auditing 15 dining locations at BYU. Working with that much messy real-world data is what got me into automation, and then into building full-stack apps.</p>
+          <p>Before BYU I spent two years in <em>Ulaanbaatar, Mongolia</em> teaching English and mentoring volunteers, and before that I built manufacturing workflows at a hardware startup. Off the clock I weld, work wood and metal, and go backpacking.</p>
+        </div>
+      </div>
+      <div class="panel reveal">
+        <div class="bar mono"><span>SPEC_SHEET</span><span>REV 2026</span></div>
+        <div class="kv mono">
+          <div><b>base</b><span>Provo, UT</span></div>
+          <div><b>origin</b><span>Tucson, AZ</span></div>
+          <div><b>degree</b><span>B.S. IS + Stats</span></div>
+          <div><b>launch</b><span>Apr 2028</span></div>
+          <div><b>gpa</b><span>3.82</span></div>
+          <div><b>languages</b><span>EN · Mongolian</span></div>
+          <div><b>rank</b><span>Eagle Scout</span></div>
+          <div><b>relocation</b><span style="color:var(--green)">open</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSIONS -->
+  <section id="missions">
+    <div class="sec-head reveal"><span class="num mono">02</span><h2>Missions</h2><span class="rule"></span></div>
+
+    <div class="featured">
+      <article class="panel mission reveal">
+        <div class="bar mono"><span>MISSION 001</span><span class="ok">● LIVE</span></div>
+        <div class="inner">
+          <h3>Marks Investment Analytics</h3>
+          <div class="role mono">Full-stack · Jul 2026 – present</div>
+          <ul>
+            <li>Personal finance web app with 10+ TypeScript calculators (mortgage, budget, retirement) and React charts</li>
+            <li>Live market data through a Yahoo Finance API layer; Supabase (PostgreSQL) for storage</li>
+            <li>Git/GitHub workflow with continuous deployment on Vercel. I made the stack and architecture calls.</li>
+          </ul>
+          <div class="chips"><span>Next.js</span><span>TypeScript</span><span>React</span><span>Tailwind</span><span>Supabase</span><span>Vercel</span></div>
+          <div class="links"><a href="https://marks-financial-services.vercel.app" target="_blank">Launch app →</a></div>
+        </div>
+      </article>
+
+      <article class="panel mission reveal">
+        <div class="bar mono"><span>MISSION 002</span><span>COMPLETE</span></div>
+        <div class="inner">
+          <h3>BYU Portfolio + Memory Match</h3>
+          <div class="role mono">Front-end · Dec 2025</div>
+          <ul>
+            <li>Multi-page responsive site in HTML/CSS with BYU brand styling and custom navigation</li>
+            <li>JavaScript memory-match game: card-flip logic, a shuffle algorithm, DOM manipulation</li>
+            <li>Bootstrap grid plus an embedded interactive Tableau visualization</li>
+          </ul>
+          <div class="chips"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Bootstrap</span><span>Tableau</span></div>
+          <div class="links"><a id="gh-btn2" target="_blank">Source →</a></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="repo-head mono">$ git ls-remote <b>github.com/<span id="gh-user"></span></b></p>
+    <div class="repos" id="repos"><p class="mono" style="color:var(--muted)">scanning repositories…</p></div>
+  </section>
+
+  <!-- SYSTEMS -->
+  <section id="systems">
+    <div class="sec-head reveal"><span class="num mono">03</span><h2>Systems</h2><span class="rule"></span></div>
+    <div class="systems">
+      <div class="panel sys reveal"><h4 class="mono">DEVELOPMENT</h4>
+        <div class="item">Python<i></i></div><div class="item">JavaScript<i></i></div><div class="item">TypeScript<i></i></div><div class="item">React / Next.js<i></i></div><div class="item">HTML / CSS<i></i></div><div class="item">Tailwind · Bootstrap<i></i></div></div>
+      <div class="panel sys reveal"><h4 class="mono">DATA &amp; ANALYTICS</h4>
+        <div class="item">SQL / PostgreSQL<i></i></div><div class="item">Supabase<i></i></div><div class="item">Tableau<i></i></div><div class="item">Excel modeling<i></i></div><div class="item">Statistics<i></i></div></div>
+      <div class="panel sys reveal"><h4 class="mono">AI</h4>
+        <div class="item">Claude Code<i></i></div><div class="item">AI-assisted dev<i></i></div><div class="item">Prompt design<i></i></div></div>
+      <div class="panel sys reveal"><h4 class="mono">TOOLING</h4>
+        <div class="item">Git / GitHub<i></i></div><div class="item">Vercel CI/CD<i></i></div><div class="item">Xero<i></i></div><div class="item">Microsoft Office<i></i></div></div>
+    </div>
+  </section>
+
+  <!-- FLIGHT LOG -->
+  <section id="log">
+    <div class="sec-head reveal"><span class="num mono">04</span><h2>Flight Log</h2><span class="rule"></span></div>
+    <div class="log">
+      <div class="entry reveal"><div class="panel inner">
+        <h3>Accounting Intern</h3><div class="when mono">APR 2026 — NOW</div>
+        <div class="org mono">Reef Capital Partners · Lehi, UT</div>
+        <ul>
+          <li>Consolidated financials across <b>50+ entities</b> and properties</li>
+          <li>Maintained investment records for <b>700+ investors</b> with proprietary data tools</li>
+          <li>Reconciled bank accounts and statements for month-end close; coded invoices in Xero</li>
+        </ul>
+      </div></div>
+      <div class="entry reveal"><div class="panel inner">
+        <h3>Accountant 1</h3><div class="when mono">AUG 2025 — NOW</div>
+        <div class="org mono">BYU Dining Services · Provo, UT</div>
+        <ul>
+          <li>Audited 15 locations, cutting inventory misstatements by <b>$100K+ per quarter</b></li>
+          <li>Built Excel models that automate recurring financial reports</li>
+          <li>Process 100+ invoices weekly (<b>+15% efficiency</b>); recovered <b>$3K+/qtr</b> in supplier credits</li>
+        </ul>
+      </div></div>
+      <div class="entry reveal"><div class="panel inner">
+        <h3>Volunteer Representative &amp; ESL Teacher</h3><div class="when mono">MAY 2023 — JUN 2025</div>
+        <div class="org mono">The Church of Jesus Christ of Latter-day Saints · Ulaanbaatar, Mongolia</div>
+        <ul>
+          <li>Designed English lesson plans for <b>hundreds of students</b></li>
+          <li>Mentored 3 new volunteers; coordinated <b>300+ hours</b> of community service</li>
+        </ul>
+      </div></div>
+      <div class="entry reveal"><div class="panel inner">
+        <h3>Production Engineer</h3><div class="when mono">AUG 2021 — MAY 2022</div>
+        <div class="org mono">Cooksy (start-up) · Tucson, AZ</div>
+        <ul>
+          <li>Designed the end-to-end manufacturing and assembly workflow for a smart cooking device</li>
+          <li>Worked with leadership to bring Design for Manufacturing into future products</li>
+        </ul>
+      </div></div>
+      <div class="entry reveal"><div class="panel inner">
+        <h3>B.S. Information Systems · Minor in Statistics</h3><div class="when mono">EXPECTED APR 2028</div>
+        <div class="org mono">Brigham Young University · Marriott School of Business</div>
+        <ul>
+          <li>GPA <b>3.82</b> · VP, BYU Trivia Club</li>
+          <li>AIS · AI in Business Society · Accounting Society · Corporate Finance &amp; Advisory Association</li>
+        </ul>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="panel contact reveal">
+      <p class="mono" style="color:var(--cyan);font-size:12px;letter-spacing:.2em">// OPEN CHANNEL</p>
+      <h2>Let's build<br>something <span>real.</span></h2>
+      <p>I'm looking for Summer 2027 internships in data engineering, ML/AI, and mission systems software.</p>
+      <div class="btns">
+        <a class="btn go" href="mailto:jasonvmarks@gmail.com">▸ jasonvmarks@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">linkedin</a>
+        <a class="btn" id="gh-btn3" target="_blank">github</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap mono"><span>© <span id="yr"></span> Jason Marks</span><span>hand-built · HTML/CSS/JS · GitHub Pages</span></div></footer>
+
+<script>
+const GITHUB_USER = "jasonmarks22";
+const HIDE = [GITHUB_USER.toLowerCase(), `${GITHUB_USER.toLowerCase()}.github.io`];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+$("yr").textContent = new Date().getFullYear();
+$("gh-user").textContent = GITHUB_USER;
+["gh-btn","gh-btn2","gh-btn3"].forEach(id => $(id).href = `https://github.com/${GITHUB_USER}`);
+
+// clock (Mountain Time)
+const tick = () => $("clock").textContent = "PROVO " + new Date().toLocaleTimeString("en-US",{timeZone:"America/Denver",hour12:false}) + " MT";
+tick(); setInterval(tick, 1000);
+
+// typewriter
+const lines = [
+  "> data engineering · ML/AI · mission systems",
+  "> full-stack: Next.js · TypeScript · Supabase",
+  "> 50+ entities consolidated, 700+ investor records",
+  "> fluent in Python, SQL, and Mongolian"
+];
+let li = 0, ci = 0, del = false;
+function type(){
+  const t = lines[li];
+  $("type").innerHTML = `<b>jason@byu</b>:~$ ${esc(t.slice(0, ci))}<span class="caret"></span>`;
+  if (!del && ci < t.length) ci++;
+  else if (!del) { del = true; return setTimeout(type, 1800); }
+  else if (ci > 0) ci--;
+  else { del = false; li = (li + 1) % lines.length; }
+  setTimeout(type, del ? 18 : 42);
+}
+reduce ? ($("type").innerHTML = `<b>jason@byu</b>:~$ ${lines[0]}`) : type();
+
+// radar satellites
+const sats = ["Python","SQL","TypeScript","React","Supabase","Stats"];
+const radar = $("radar");
+const satEls = sats.map((s, i) => { const e = document.createElement("div"); e.className = "sat mono"; e.innerHTML = `<i></i>${s}`; radar.appendChild(e); return e; });
+function orbit(t){
+  const r = radar.offsetWidth / 2;
+  satEls.forEach((e, i) => {
+    const ring = i % 2 ? .84 : .58, sp = i % 2 ? .00012 : -.00018;
+    const a = (i / sats.length) * Math.PI * 2 + t * sp;
+    e.style.transform = `translate(${Math.cos(a) * r * ring - 6}px, ${Math.sin(a) * r * ring - 8}px)`;
+  });
+  if (!reduce) requestAnimationFrame(orbit);
+}
+requestAnimationFrame(orbit);
+
+// starfield
+const c = $("stars"), x = c.getContext("2d"); let W, H, stars = [];
+function size(){ W = c.width = innerWidth; H = c.height = innerHeight;
+  stars = Array.from({length: Math.min(220, W / 6)}, () => ({x: Math.random() * W, y: Math.random() * H, z: Math.random() * .8 + .2})); }
+function draw(){ x.clearRect(0, 0, W, H);
+  for (const s of stars){ s.y += s.z * .25; if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+    x.fillStyle = `rgba(200,220,255,${s.z * .8})`; x.fillRect(s.x, s.y, s.z * 1.6, s.z * 1.6); }
+  if (!reduce) requestAnimationFrame(draw); }
+addEventListener("resize", size); size(); draw();
+
+// cursor glow
+addEventListener("pointermove", e => { $("glow").style.left = e.clientX + "px"; $("glow").style.top = e.clientY + "px"; });
+
+// reveal + counters
+const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return;
+  e.target.classList.add("in");
+  e.target.querySelectorAll("[data-count]").forEach(n => {
+    const end = +n.dataset.count, dec = +(n.dataset.dec || 0), pre = n.dataset.pre || "", suf = n.dataset.suf || ""; let st = null;
+    const step = ts => { st ??= ts; const p = Math.min((ts - st) / 1400, 1), v = end * (1 - Math.pow(1 - p, 3));
+      n.textContent = pre + v.toFixed(dec) + suf; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+  io.unobserve(e.target);
+}), {threshold: .15});
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// live repos
+fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
+  .then(r => { if (!r.ok) throw 0; return r.json(); })
+  .then(repos => {
+    const list = repos.filter(r => !r.fork && !HIDE.includes(r.name.toLowerCase()))
+      .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at));
+    $("repos").innerHTML = list.length ? list.map(r => `
+      <a class="panel repo" href="${r.html_url}" target="_blank">
+        <h4>${esc(r.name)}</h4>
+        <div class="meta mono">${esc(r.language || "—")} · ${new Date(r.pushed_at).toLocaleDateString("en-US",{month:"short",year:"numeric"})}${r.stargazers_count ? " · ★ " + r.stargazers_count : ""}</div>
+        <p>${esc(r.description || "No description yet.")}</p>
+        <div class="links"><span style="color:var(--amber)">view source →</span></div>
+      </a>`).join("") : `<p class="mono" style="color:var(--muted)">// more repos coming online soon</p>`;
+  })
+  .catch(() => $("repos").innerHTML = `<p class="mono" style="color:var(--muted)">// <a style="color:var(--amber)" href="https://github.com/${GITHUB_USER}" target="_blank">browse repos on GitHub →</a></p>`);
+</script>
+</body>
+</html>
