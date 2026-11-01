@@ -34,15 +34,21 @@ a{color:inherit;text-decoration:none}
 
 /* hero */
 .hero{position:relative;height:100vh;min-height:680px;overflow:hidden}
-#sky{position:absolute;inset:0;width:100%;height:100%}
-.hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-38%);text-align:center;z-index:3;padding:0 24px}
+#scene{position:absolute;inset:0;background:#020305}
+#scene canvas{display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1.6s ease}
+#scene.ready canvas{opacity:1}
+.hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,rgba(3,4,6,.88) 0%,rgba(3,4,6,.55) 38%,rgba(3,4,6,0) 62%),linear-gradient(0deg,var(--bg) 0%,rgba(5,7,10,0) 22%)}
+.hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-44%);z-index:3}
+.hero-content .wrap{max-width:none;padding:0 40px 0 max(40px,7vw)}
 .hero .kicker{font-size:11.5px;letter-spacing:.42em;color:var(--soft);text-transform:uppercase;margin-bottom:26px}
-h1{font-size:clamp(44px,8.4vw,108px);font-weight:200;letter-spacing:.2em;line-height:1;text-transform:uppercase;padding-left:.2em;
+h1{font-size:clamp(44px,7vw,100px);font-weight:200;letter-spacing:.16em;line-height:1.02;text-transform:uppercase;
   text-shadow:0 2px 40px rgba(0,0,0,.6)}
-.type{margin:30px auto 38px;font-size:14px;color:var(--soft);min-height:22px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.type{margin:30px 0 38px;font-size:14px;color:var(--soft);min-height:22px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 .type b{color:var(--accent);font-weight:400}
 .caret{display:inline-block;width:8px;height:16px;background:var(--soft);vertical-align:-3px;margin-left:2px;animation:pulse 1s steps(1) infinite}
-.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.contact .btns{justify-content:center}
 .btn{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:13px 24px;border:1px solid var(--line2);color:var(--text);transition:.2s;background:rgba(5,7,10,.35);backdrop-filter:blur(4px)}
 .btn:hover{border-color:rgba(255,255,255,.45)}
 .btn.primary{background:var(--text);color:#07090c;border-color:var(--text)}
@@ -127,6 +133,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:300;letter-spacing:-.02em;line-hei
 
 footer{border-top:1px solid var(--line);padding:28px 0;font-size:11.5px;color:var(--muted);letter-spacing:.08em}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.credit{font-size:10.5px;color:#4c525b;margin-top:10px}
 
 .fade{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
 .fade.in{opacity:1;transform:none}
@@ -142,7 +149,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   .systems{grid-template-columns:repeat(2,1fr)}
   .sys:nth-child(2){border-right:none}.sys:nth-child(-n+2){border-bottom:1px solid var(--line)}
   section{padding:88px 0}
-  h1{letter-spacing:.12em;padding-left:.12em}
+  h1{letter-spacing:.1em}
+  .hero::after{background:linear-gradient(0deg,rgba(3,4,6,.9) 30%,rgba(3,4,6,.2) 70%,rgba(3,4,6,.5) 100%)}
+  .hero-content{top:auto;bottom:64px;transform:none}
+  .hero-content .wrap{padding:0 22px}
 }
 @media(prefers-reduced-motion:reduce){.fade{opacity:1;transform:none;transition:none}}
 </style>
@@ -164,14 +174,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 </div>
 
 <header class="hero">
-  <canvas id="sky" aria-hidden="true"></canvas>
+  <div id="scene" aria-hidden="true"></div>
 
-  <div class="hud tl mono"><span class="live">● LIVE</span> · EARTH VIEW<br>ORTHO · TILT <b>23.4°</b></div>
-  <div class="hud tr mono">TRACKING <b>6</b> OBJECTS<br>LEO · MEO · LUNAR</div>
+  <div class="hud tl mono"><span class="live">● LIVE</span> · EARTH VIEW<br>AXIAL TILT <b>23.4°</b> · <span id="sunstate">SUN TRACKING</span></div>
+  <div class="hud tr mono">IMAGERY · <b>NASA BLUE MARBLE</b><br>SKY · <b>ESO MILKY WAY</b></div>
   <div class="hud bl mono">BASE · PROVO, UT<br>LAT <b>40.23°N</b> · LON <b>111.66°W</b></div>
   <div class="hud br mono">MISSION CLOCK<br><b id="utc">--:--:--</b> UTC</div>
 
-  <div class="hero-content">
+  <div class="hero-content"><div class="wrap">
     <p class="kicker">Information Systems · Statistics · BYU</p>
     <h1>Jason Marks</h1>
     <p class="type mono" id="type"></p>
@@ -181,7 +191,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
       <a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub</a>
       <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn</a>
     </div>
-  </div>
+  </div></div>
   <div class="scroll mono">SCROLL ↓</div>
 </header>
 
@@ -300,7 +310,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   </div>
 </section>
 
-<footer><div class="wrap mono"><span>© <span id="yr"></span> JASON MARKS</span><span>PROVO, UT · 40.23°N 111.66°W</span></div></footer>
+<footer><div class="wrap mono"><span>© <span id="yr"></span> JASON MARKS</span><span>PROVO, UT · 40.23°N 111.66°W</span></div>
+<div class="wrap credit mono">EARTH IMAGERY: NASA BLUE MARBLE &amp; EARTH OBSERVATORY · MILKY WAY PANORAMA: ESO/S. BRUNIER (CC BY 4.0)</div></footer>
 
 <script>
 const GITHUB_USER = "JasonMarks22";
@@ -327,131 +338,6 @@ function type(){ const t = lines[li];
   setTimeout(type, del ? 16 : 40); }
 reduce ? ($("type").innerHTML = `<b>jason@byu</b>:~$ ${lines[0]}`) : type();
 
-// ================= SKY: stars + Earth + orbits =================
-const cv = $("sky"), g = cv.getContext("2d");
-let W, H, dpr, CX, CY, ER, starLayer;
-
-// --- noise ---
-const P = new Uint8Array(512); { const p = [...Array(256).keys()]; let s = 7; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  for (let i = 255; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; } for (let i = 0; i < 512; i++) P[i] = p[i & 255]; }
-const fade = t => t * t * (3 - 2 * t), lerp = (a, b, t) => a + (b - a) * t, h3 = (i, j, k) => P[(P[(P[i & 255] + j) & 255] + k) & 255] / 255;
-function vn(x, y, z){ const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = fade(x - xi), yf = fade(y - yi), zf = fade(z - zi);
-  return lerp(lerp(lerp(h3(xi,yi,zi),h3(xi+1,yi,zi),xf),lerp(h3(xi,yi+1,zi),h3(xi+1,yi+1,zi),xf),yf),
-              lerp(lerp(h3(xi,yi,zi+1),h3(xi+1,yi,zi+1),xf),lerp(h3(xi,yi+1,zi+1),h3(xi+1,yi+1,zi+1),xf),yf),zf); }
-const fbm = (x, y, z, o) => { let v = 0, a = .5, f = 1, n = 0; for (let i = 0; i < o; i++) { v += a * vn(x*f, y*f, z*f); n += a; a *= .5; f *= 2.03; } return v / n; };
-
-// --- bake Earth textures (equirectangular) ---
-const TW = 800, TH = 400, landT = new Uint8ClampedArray(TW*TH*3), cloudT = new Float32Array(TW*TH), oceanT = new Uint8Array(TW*TH);
-for (let j = 0; j < TH; j++) { const lat = Math.PI/2 - (j + .5) / TH * Math.PI, cl = Math.cos(lat), sl = Math.sin(lat);
-  for (let i = 0; i < TW; i++) { const lon = (i + .5) / TW * 2 * Math.PI, px = cl * Math.cos(lon), pz = cl * Math.sin(lon), k = j*TW + i;
-    const h = fbm(px*1.5+3, sl*1.5+3, pz*1.5+3, 6), ice = Math.abs(lat) > 1.2 + (fbm(px*6,sl*6,pz*6,2) - .5) * .3;
-    let r, gg, b;
-    if (ice) { r = 210; gg = 216; b = 222; }
-    else if (h < .535) { const d = Math.min(1, (.535 - h) * 6); r = lerp(22, 5, d); gg = lerp(52, 18, d); b = lerp(82, 42, d); oceanT[k] = 1; }
-    else { const e = Math.min(1, (h - .535) * 5), dry = Math.max(0, 1 - Math.abs(lat) * 2.2) * fbm(px*4+9,sl*4,pz*4,3);
-      r = lerp(lerp(58, 118, dry), 132, e*e); gg = lerp(lerp(70, 98, dry), 120, e*e); b = lerp(lerp(48, 70, dry), 104, e*e); }
-    landT[k*3] = r; landT[k*3+1] = gg; landT[k*3+2] = b;
-    // swirly cloud bands
-    const w = fbm(px*2+40, sl*2+40, pz*2+40, 3) * 2.2;
-    cloudT[k] = Math.max(0, Math.min(1, (fbm(px*3.2+w, sl*6+w, pz*3.2+w, 6) - .47) * 3.4)); } }
-
-// --- Earth renderer (offscreen, lower res, scaled up) ---
-const eo = document.createElement("canvas"), eg = eo.getContext("2d"); let ES, EImg;
-const tilt = 23.4 * Math.PI / 180, ctl = Math.cos(tilt), stl = Math.sin(tilt);
-const L = (() => { const v = [-.62, -.55, .56], m = Math.hypot(...v); return v.map(a => a / m); })();
-function renderEarth(rot, crot){
-  const D = EImg.data, R = ES / 2; D.fill(0);
-  for (let y = 0; y < ES; y++) { const ny = (y - R + .5) / R;
-    for (let x = 0; x < ES; x++) { const nx = (x - R + .5) / R, nz2 = 1 - nx*nx - ny*ny; if (nz2 <= 0) continue;
-      const nz = Math.sqrt(nz2), wx = nx * ctl + ny * stl, wy = -nx * stl + ny * ctl;
-      const lat = Math.asin(-wy); let lon = Math.atan2(nz, wx) + rot; lon -= Math.floor(lon / 6.2832) * 6.2832;
-      const tj = Math.min(TH - 1, Math.floor((Math.PI/2 - lat) / Math.PI * TH)), ti = Math.floor(lon / 6.2832 * TW) % TW, k = tj*TW + ti;
-      let lc = lon + crot; lc -= Math.floor(lc / 6.2832) * 6.2832; const cv2 = cloudT[tj*TW + (Math.floor(lc / 6.2832 * TW) % TW)];
-      const dif = nx*L[0] + ny*L[1] + nz*L[2], lit = Math.max(0, Math.min(1, (dif + .08) * 1.15));
-      let r = landT[k*3], gg = landT[k*3+1], b = landT[k*3+2];
-      if (oceanT[k]) { const hx = nx + L[0], hy = ny + L[1], hz = nz + L[2], hm = Math.hypot(hx,hy,hz), sp = Math.pow(Math.max(0,(hx*nx+hy*ny+hz*nz)/hm), 48) * .45 * (1 - cv2);
-        r += sp * 190; gg += sp * 195; b += sp * 200; }
-      r = lerp(r, 225, cv2 * .9); gg = lerp(gg, 229, cv2 * .9); b = lerp(b, 236, cv2 * .9);
-      const sh = .03 + .97 * Math.pow(lit, .9), limb = Math.pow(nz, .3), rim = Math.pow(1 - nz, 2.5) * Math.min(1, lit * 1.5);
-      let cr = 0, cg = 0; if (!oceanT[k] && lit < .05 && cv2 < .4) { const n = h3(ti*7, tj*13, 3); if (n > .985) { cr = 110 * (1 - lit*20); cg = 78 * (1 - lit*20); } }
-      const o = (y * ES + x) * 4, dim = .82;
-      D[o] = (r * sh * limb + rim * 55) * dim + cr; D[o+1] = (gg * sh * limb + rim * 105) * dim + cg; D[o+2] = (b * sh * limb + rim * 200) * dim + cg * .35;
-      D[o+3] = nz2 < .0025 ? 255 * nz2 / .0025 : 255; } }
-  eg.putImageData(EImg, 0, 0);
-}
-
-// --- orbiting bodies ---
-const bodies = [
-  {ring: 1.30, sp: .030, ph: 3.9, kind: "sat", label: "PYTHON"},
-  {ring: 1.30, sp: .030, ph: .8,  kind: "sat", label: "SQL"},
-  {ring: 1.62, sp: -.018, ph: 2.4, kind: "sat", label: "TYPESCRIPT"},
-  {ring: 1.62, sp: -.018, ph: 5.6, kind: "mars", label: ""},
-  {ring: 2.05, sp: .010, ph: 5.95, kind: "moon", label: ""},
-  {ring: 2.05, sp: .010, ph: 2.6, kind: "sat", label: "SUPABASE"}];
-
-function size(){
-  dpr = Math.min(devicePixelRatio || 1, 2); W = cv.clientWidth; H = cv.clientHeight;
-  cv.width = W * dpr; cv.height = H * dpr;
-  CX = W / 2; CY = H * .57; ER = Math.min(W * .34, H * .40);
-  ES = Math.min(400, Math.round(ER * 2)); eo.width = eo.height = ES; EImg = eg.createImageData(ES, ES);
-  // stars (static)
-  starLayer = document.createElement("canvas"); starLayer.width = W * dpr; starLayer.height = H * dpr;
-  const s = starLayer.getContext("2d"); s.setTransform(dpr,0,0,dpr,0,0);
-  const bg = s.createRadialGradient(CX, CY, ER * .8, CX, CY, Math.max(W, H) * .8);
-  bg.addColorStop(0, "#0a1018"); bg.addColorStop(.4, "#06090e"); bg.addColorStop(1, "#030406");
-  s.fillStyle = bg; s.fillRect(0, 0, W, H);
-  // faint nebula patches
-  [[.18,.3,.35,"60,70,110"],[.85,.7,.4,"70,60,95"],[.6,.12,.3,"50,80,110"]].forEach(([x,y,r,c]) => {
-    const n = s.createRadialGradient(W*x, H*y, 0, W*x, H*y, W*r); n.addColorStop(0, `rgba(${c},.10)`); n.addColorStop(1, `rgba(${c},0)`); s.fillStyle = n; s.fillRect(0,0,W,H); });
-  let seed = 3; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const n = Math.round(W * H / 700);
-  for (let i = 0; i < n; i++) { const m = Math.pow(r(), 4.5), x = r() * W, y = r() * H, t = r();
-    const col = t < .1 ? "190,205,255" : t < .2 ? "255,225,195" : "238,240,246", a = .1 + m * .85, rad = .3 + m * 1.15;
-    s.fillStyle = `rgba(${col},${a})`; s.beginPath(); s.arc(x, y, rad, 0, 6.283); s.fill();
-    if (m > .6) { const gl = s.createRadialGradient(x, y, 0, x, y, rad * 6); gl.addColorStop(0, `rgba(${col},${a*.16})`); gl.addColorStop(1, `rgba(${col},0)`); s.fillStyle = gl; s.beginPath(); s.arc(x, y, rad*6, 0, 6.283); s.fill(); } }
-  rot = rot ?? 1.2; renderEarth(rot, crot);
-}
-
-function sphere(x, y, r, base, lightDir){ // small shaded sphere (moon / mars)
-  const gr = g.createRadialGradient(x - r*.45, y - r*.45, r*.1, x, y, r);
-  gr.addColorStop(0, base[0]); gr.addColorStop(.6, base[1]); gr.addColorStop(1, base[2]);
-  g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.283); g.fill(); }
-
-let rot, crot = 0, last = 0;
-function frame(ts){
-  const t = ts / 1000;
-  if (!reduce && ts - last > 70) { last = ts; rot += .0016; crot += .0006; renderEarth(rot, crot); }
-  g.setTransform(dpr,0,0,dpr,0,0);
-  g.drawImage(starLayer, 0, 0, W, H);
-  // rings
-  g.lineWidth = 1;
-  for (const rr of [1.30, 1.62, 2.05]) { g.strokeStyle = "rgba(150,175,210,.16)"; g.beginPath(); g.arc(CX, CY, ER * rr, 0, 6.283); g.stroke(); }
-  // atmosphere halo
-  const halo = g.createRadialGradient(CX, CY, ER * .97, CX, CY, ER * 1.12);
-  halo.addColorStop(0, "rgba(110,160,230,.28)"); halo.addColorStop(.3, "rgba(80,130,210,.09)"); halo.addColorStop(1, "rgba(40,80,170,0)");
-  g.fillStyle = halo; g.beginPath(); g.arc(CX, CY, ER * 1.12, 0, 6.283); g.fill();
-  g.imageSmoothingQuality = "high"; g.drawImage(eo, CX - ER, CY - ER, ER * 2, ER * 2);
-  // darken centre band so headline reads cleanly
-  const band = g.createLinearGradient(0, CY - ER * .9, 0, CY + ER * .5);
-  band.addColorStop(0, "rgba(4,6,9,0)"); band.addColorStop(.45, "rgba(4,6,9,.38)"); band.addColorStop(1, "rgba(4,6,9,0)");
-  g.fillStyle = band; g.fillRect(0, CY - ER, W, ER * 1.6);
-  // bodies
-  g.font = '500 10px "JetBrains Mono", monospace';
-  for (const b of bodies) { const a = b.ph + (reduce ? 0 : t * b.sp), x = CX + Math.cos(a) * ER * b.ring, y = CY + Math.sin(a) * ER * b.ring;
-    if (b.kind === "moon") { sphere(x, y, ER * .13, ["#d8d6d2", "#8c8a86", "#2a2928"]); continue; }
-    if (b.kind === "mars") { sphere(x, y, ER * .045, ["#d79a72", "#9a5236", "#2c160e"]); continue; }
-    g.strokeStyle = "rgba(160,185,220,.55)"; g.beginPath(); g.arc(x, y, 6, 0, 6.283); g.stroke();
-    g.fillStyle = "rgba(200,215,235,.9)"; g.beginPath(); g.arc(x, y, 2, 0, 6.283); g.fill();
-    g.fillStyle = "rgba(160,170,185,.75)"; const w = g.measureText(b.label).width;
-    g.fillText(b.label, x + 12 + w > W - 10 ? x - 12 - w : x + 12, y + 3.5); }
-  // fade to page
-  const fd = g.createLinearGradient(0, H * .82, 0, H); fd.addColorStop(0, "rgba(5,7,10,0)"); fd.addColorStop(1, "rgba(5,7,10,1)");
-  g.fillStyle = fd; g.fillRect(0, H * .82, W, H * .18);
-  if (!reduce) requestAnimationFrame(frame);
-}
-size(); requestAnimationFrame(frame);
-let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { size(); if (reduce) requestAnimationFrame(frame); }, 150); });
-
 // fade-in on scroll
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold: .12});
 document.querySelectorAll(".fade").forEach(el => io.observe(el));
@@ -470,6 +356,93 @@ fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updat
       </a>`).join("") : `<p class="mono" style="color:var(--muted);font-size:13px">// more missions coming online soon</p>`;
   })
   .catch(() => $("repos").innerHTML = `<p class="mono" style="color:var(--muted);font-size:13px">// <a href="https://github.com/${GITHUB_USER}" target="_blank" style="border-bottom:1px solid var(--line2)">browse repositories on GitHub ↗</a></p>`);
+</script>
+<script type="module">
+import * as THREE from "./assets/three.min.js";
+const host = document.getElementById("scene");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const renderer = new THREE.WebGLRenderer({antialias: true, alpha: false, powerPreference: "high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(32, 1, .1, 200);
+const loader = new THREE.TextureLoader(); loader.setCrossOrigin("anonymous");
+const tex = (u, srgb = true) => new Promise(r => loader.load(u, t => { if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); r(t); }, undefined, () => r(null)));
+
+// real Milky Way (ESO/S. Brunier, 360° panorama)
+const skyMat = new THREE.MeshBasicMaterial({side: THREE.BackSide, color: new THREE.Color(.55, .55, .58)});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(90, 64, 32), skyMat);
+sky.rotation.set(.9, 2.2, .45); scene.add(sky);
+
+// Earth (NASA Blue Marble day, city lights, clouds, water mask)
+const sun = new THREE.Vector3(-.75, .3, .6).normalize();
+const earthMat = new THREE.ShaderMaterial({
+  uniforms: {day: {value: null}, night: {value: null}, water: {value: null}, sunDir: {value: sun}},
+  vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+    void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vec4 wp = modelMatrix * vec4(position,1.); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
+  fragmentShader: `uniform sampler2D day, night, water; uniform vec3 sunDir; varying vec2 vUv; varying vec3 vN; varying vec3 vV;
+    void main(){
+      float d = dot(normalize(vN), sunDir);
+      float dayMix = smoothstep(-.12, .22, d);
+      vec3 dc = texture2D(day, vUv).rgb, nc = texture2D(night, vUv).rgb * vec3(1., .82, .6) * 1.15;
+      float w = texture2D(water, vUv).r;
+      vec3 h = normalize(sunDir + vV); float spec = pow(max(dot(normalize(vN), h), 0.), 40.) * w * .55;
+      vec3 col = dc * (.06 + .94 * max(d, 0.)) + vec3(1., .95, .88) * spec * dayMix;
+      col = mix(nc * (1. - dayMix), col, dayMix);
+      float rim = pow(1. - max(dot(normalize(vN), vV), 0.), 3.);
+      col += vec3(.30, .55, 1.) * rim * .55 * smoothstep(-.3, .5, d);
+      gl_FragColor = vec4(col, 1.);
+      #include <colorspace_fragment>
+    }`});
+const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 64), earthMat);
+const tiltG = new THREE.Group(); tiltG.rotation.z = 23.4 * Math.PI / 180; tiltG.add(earth); scene.add(tiltG);
+
+const cloudMat = new THREE.ShaderMaterial({transparent: true, depthWrite: false,
+  uniforms: {clouds: {value: null}, sunDir: {value: sun}},
+  vertexShader: `varying vec2 vUv; varying vec3 vN; void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
+  fragmentShader: `uniform sampler2D clouds; uniform vec3 sunDir; varying vec2 vUv; varying vec3 vN;
+    void main(){ float c = texture2D(clouds, vUv).r; float d = dot(normalize(vN), sunDir);
+      float l = smoothstep(-.15, .35, d); gl_FragColor = vec4(vec3(.95) * (.04 + .96 * l), c * .9); }`});
+const cloudMesh = new THREE.Mesh(new THREE.SphereGeometry(1.008, 128, 64), cloudMat); tiltG.add(cloudMesh);
+
+// thin atmosphere halo (view-space fresnel)
+const atm = new THREE.Mesh(new THREE.SphereGeometry(1.045, 96, 48), new THREE.ShaderMaterial({
+  side: THREE.BackSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: {sunDir: {value: sun}},
+  vertexShader: `varying vec3 vNv; varying vec3 vNw; void main(){ vNv = normalize(normalMatrix * normal); vNw = normalize(mat3(modelMatrix) * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
+  fragmentShader: `uniform vec3 sunDir; varying vec3 vNv; varying vec3 vNw;
+    void main(){ float i = pow(clamp(.62 + dot(vNv, vec3(0.,0.,1.)), 0., 1.), 4.);
+      float lit = smoothstep(-.35, .45, dot(-vNw, -sunDir) * -1. + .2);
+      gl_FragColor = vec4(vec3(.32, .55, 1.) * i * .9 * (.15 + .85 * lit), 1.); }`}));
+scene.add(atm);
+
+function layout(){
+  const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+  const mobile = w < 900;
+  camera.position.set(0, 0, mobile ? 6.8 : 7.0); camera.updateProjectionMatrix();
+  // place Earth off to the right (desktop) or upper area (mobile)
+  const visH = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, visW = visH * camera.aspect;
+  const x = mobile ? 0 : visW * .335, y = mobile ? visH * .2 : -visH * .02;
+  tiltG.position.set(x, y, 0); atm.position.copy(tiltG.position);
+}
+addEventListener("resize", layout);
+
+const [day, night, water, clouds, mw] = await Promise.all([
+  tex("assets/earth-day.jpg"), tex("assets/earth-night.jpg"), tex("assets/earth-water.jpg", false), tex("assets/earth-clouds.jpg", false),
+  tex("https://cdn.eso.org/images/large/eso0932a.jpg")]);
+Object.assign(earthMat.uniforms, {day: {value: day}, night: {value: night}, water: {value: water}, sunDir: {value: sun}});
+cloudMat.uniforms.clouds.value = clouds;
+if (mw) { skyMat.map = mw; skyMat.needsUpdate = true; } else skyMat.color.set(0x000000);
+earth.rotation.y = -2.0; cloudMesh.rotation.y = -2.0;
+layout(); host.classList.add("ready");
+
+let mx = 0, my = 0; addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+let lastT = performance.now();
+renderer.setAnimationLoop(() => {
+  const now = performance.now(), dt = Math.min((now - lastT) / 1000, .05); lastT = now;
+  if (!reduce) { earth.rotation.y += dt * .035; cloudMesh.rotation.y += dt * .042; sky.rotation.y += dt * .002;
+    camera.position.x += (mx * .18 - camera.position.x) * .03; camera.position.y += (-my * .12 - camera.position.y) * .03; camera.lookAt(0, 0, 0); }
+  renderer.render(scene, camera);
+});
 </script>
 </body>
 </html>
