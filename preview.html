@@ -448,8 +448,8 @@ renderer.setAnimationLoop(() => {
     for (const s of skills) {
       let diff = sweep - s.a; diff -= Math.floor(diff / 6.2832) * 6.2832;
       if (diff < .06 && t - s.hit > 1) { s.hit = t; if (!found.has(s.n)) { found.add(s.n); cnt.textContent = found.size; } }
-      const age = reduce ? 0 : t - s.hit, life = Math.max(0, 1 - age / 9.5); if (life <= 0 && !reduce) continue;
-      const x = C + Math.cos(s.a) * R * s.r, y = C + Math.sin(s.a) * R * s.r, a = reduce ? .9 : Math.pow(life, 1.4);
+      if (s.hit < 0 && !reduce) continue; const age = reduce ? 0 : t - s.hit, life = Math.max(0, 1 - age / 10);
+      const x = C + Math.cos(s.a) * R * s.r, y = C + Math.sin(s.a) * R * s.r, a = reduce ? .9 : .32 + .68 * Math.pow(life, 1.2);   // stays tracked once found
       const glow = g.createRadialGradient(x, y, 0, x, y, 14); glow.addColorStop(0, G(.55 * a)); glow.addColorStop(1, G(0));
       g.fillStyle = glow; g.beginPath(); g.arc(x, y, 14, 0, 6.283); g.fill();
       g.fillStyle = `rgba(190,255,210,${a})`; g.beginPath(); g.arc(x, y, 2.6, 0, 6.283); g.fill();
