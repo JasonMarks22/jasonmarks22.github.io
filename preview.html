@@ -370,9 +370,10 @@ const loader = new THREE.TextureLoader(); loader.setCrossOrigin("anonymous");
 const tex = (u, srgb = true) => new Promise(r => loader.load(u, t => { if (srgb) t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = renderer.capabilities.getMaxAnisotropy(); r(t); }, undefined, () => r(null)));
 
 // real Milky Way (ESO/S. Brunier, 360° panorama)
-const skyMat = new THREE.MeshBasicMaterial({side: THREE.BackSide, color: new THREE.Color(.55, .55, .58)});
+const skyMat = new THREE.MeshBasicMaterial({side: THREE.BackSide, color: new THREE.Color(.62, .62, .66)});
 const sky = new THREE.Mesh(new THREE.SphereGeometry(90, 64, 32), skyMat);
-sky.rotation.set(.9, 2.2, .45); scene.add(sky);
+sky.rotation.y = Math.PI / 2 + .25;                    // bring the galactic core into view
+const skyG = new THREE.Group(); skyG.add(sky); skyG.rotation.z = -.42; skyG.rotation.x = .12; scene.add(skyG);
 
 // Earth (NASA Blue Marble day, city lights, clouds, water mask)
 const sun = new THREE.Vector3(-.75, .3, .6).normalize();
