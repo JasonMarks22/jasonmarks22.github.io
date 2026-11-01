@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jason Marks · Information Systems & Statistics</title>
+<meta name="description" content="Jason Marks — Information Systems and Statistics student at BYU, focused on data engineering, machine learning, and software.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111418; --body:#3b424c; --muted:#6b7380; --line:#e4e7eb; --bg:#ffffff; --tint:#f6f7f9;
+  --accent:#1f4e79; --accent-soft:#e8eef5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--body);line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 32px}
+h1,h2,h3,h4{color:var(--ink)}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:20;transition:background .25s,box-shadow .25s,color .25s;color:#fff}
+nav.solid{background:rgba(255,255,255,.96);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line);color:var(--ink)}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:66px}
+nav .name{font-weight:600;font-size:16px}
+nav ul{display:flex;gap:30px;list-style:none;font-size:14px;font-weight:500}
+nav ul a{opacity:.8}nav ul a:hover{opacity:1}
+nav .cta{padding:8px 16px;border:1px solid currentColor;border-radius:6px;opacity:1!important}
+
+/* header */
+header{position:relative;color:#fff;padding:180px 0 120px;overflow:hidden;background:#05070b}
+header .bg{position:absolute;inset:0;background:url("https://cdn.eso.org/images/screen/eso0932a.jpg") center 42%/cover no-repeat;opacity:.55;filter:saturate(.7)}
+header::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,11,.92) 0%,rgba(5,7,11,.7) 50%,rgba(5,7,11,.35) 100%),linear-gradient(0deg,rgba(5,7,11,.6),transparent 40%)}
+header .wrap{position:relative;z-index:2}
+.eyebrow{font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#aab6c4;margin-bottom:18px}
+header h1{color:#fff;font-size:clamp(44px,6.5vw,72px);font-weight:600;letter-spacing:-.03em;line-height:1.05}
+header p.lead{max-width:600px;font-size:19px;font-weight:300;color:#d3d9e0;margin:22px 0 36px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;padding:12px 22px;border-radius:6px;border:1px solid rgba(255,255,255,.35);color:#fff;transition:.2s}
+.btn:hover{background:rgba(255,255,255,.08)}
+.btn.primary{background:#fff;color:var(--ink);border-color:#fff}
+.btn.primary:hover{background:#e9edf2}
+.quick{display:flex;flex-wrap:wrap;gap:28px;margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.14);font-size:14px;color:#aab6c4}
+.quick b{display:block;color:#fff;font-weight:500;font-size:15px}
+
+/* sections */
+section{padding:96px 0}
+section.tint{background:var(--tint)}
+.sec-title{display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:8px}
+.sec-title h2{font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);padding-top:6px}
+.grid2{display:grid;grid-template-columns:220px 1fr;gap:40px}
+
+.about p{font-size:17px;margin-bottom:16px}
+.about p:first-child{font-size:21px;color:var(--ink);font-weight:400;line-height:1.5}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:28px}
+.facts div{background:#fff;padding:16px 18px}
+.facts span{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.facts b{color:var(--ink);font-weight:500;font-size:15px}
+
+/* project */
+.project{background:#fff;border:1px solid var(--line);border-radius:12px;padding:34px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.project .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:6px}
+.project h3{font-size:22px;font-weight:600}
+.badge{font-size:12px;font-weight:500;color:#1d6b3f;background:#e6f4ec;padding:4px 10px;border-radius:999px}
+.project .meta{font-size:14px;color:var(--muted);margin-bottom:16px}
+.project ul{padding-left:18px;margin-bottom:20px}
+.project li{margin-bottom:6px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.tags span{font-size:12.5px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:5px 11px;border-radius:6px}
+.links{display:flex;gap:22px;font-size:14px;font-weight:600;color:var(--accent)}
+.links a:hover{text-decoration:underline}
+
+.repos-head{display:flex;justify-content:space-between;margin:40px 0 14px;font-size:14px;color:var(--muted)}
+.repos-head a{color:var(--accent);font-weight:500}
+.repos{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.repo{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;transition:.2s}
+.repo:hover{border-color:#c9d2dc;box-shadow:0 4px 14px rgba(16,24,40,.06)}
+.repo h4{font-size:15px;font-weight:600;margin-bottom:4px;word-break:break-word}
+.repo p{font-size:14px;flex:1;margin-bottom:10px}
+.repo .meta{font-size:12.5px;color:var(--muted)}
+
+/* experience */
+.job{display:grid;grid-template-columns:1fr auto;gap:2px 24px;padding:26px 0;border-bottom:1px solid var(--line)}
+.job:first-child{padding-top:0}
+.job:last-child{border:none}
+.job h3{font-size:18px;font-weight:600}
+.job .when{font-size:14px;color:var(--muted);text-align:right;white-space:nowrap}
+.job .org{grid-column:1/-1;font-size:15px;color:var(--accent);font-weight:500;margin-bottom:8px}
+.job ul{grid-column:1/-1;padding-left:18px}
+.job li{margin-bottom:5px;font-size:15.5px}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 40px}
+.skills h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.skills .tags{margin:0}
+
+/* contact */
+.contact{text-align:center}
+.contact h2.big{font-size:clamp(30px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin-bottom:12px}
+.contact p{font-size:17px;max-width:540px;margin:0 auto 28px}
+.contact .btns{justify-content:center}
+.contact .btn{color:var(--ink);border-color:#cfd5dc}
+.contact .btn:hover{background:var(--tint)}
+.contact .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.contact .btn.primary:hover{background:#173d60}
+
+footer{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+@media(max-width:860px){
+  nav ul li:not(:last-child){display:none}
+  header{padding:140px 0 80px}
+  .sec-title,.grid2{grid-template-columns:1fr;gap:16px}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .skills{grid-template-columns:1fr}
+  .job{grid-template-columns:1fr}.job .when{text-align:left;order:-1}
+  section{padding:72px 0}
+}
+@media print{nav,header .bg,.btns,.repos-head,.repos{display:none}header{color:#000;background:#fff;padding:20px 0}header h1,header p.lead{color:#000}header::after{display:none}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="#" class="name">Jason Marks</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="Jason_Marks_Resume.pdf" target="_blank" class="cta">Résumé</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow">Information Systems · Statistics · Brigham Young University</p>
+    <h1>Jason Marks</h1>
+    <p class="lead">I build data systems and software, with a focus on data engineering, machine learning, and mission systems.</p>
+    <div class="btns">
+      <a class="btn primary" href="#projects">View projects</a>
+      <a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Download résumé</a>
+      <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn</a>
+      <a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub</a>
+    </div>
+    <div class="quick">
+      <div><b>Provo, Utah</b>Open to relocation</div>
+      <div><b>B.S. expected April 2028</b>GPA 3.82</div>
+      <div><b>Seeking Summer 2027 internships</b>Data engineering · ML · Software</div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap grid2">
+    <div class="sec-title" style="display:block"><h2>About</h2></div>
+    <div class="about">
+      <p>I'm an Information Systems student at BYU's Marriott School of Business with a minor in Statistics, interested in data engineering, machine learning, and mission systems software.</p>
+      <p>In my accounting roles at Reef Capital Partners and BYU Dining Services, I work with large volumes of financial data across dozens of entities and locations. That experience led me to automate recurring work and then to build full-stack applications.</p>
+      <p>Before BYU, I spent two years in Ulaanbaatar, Mongolia, teaching English and mentoring volunteers, and earlier worked as a production engineer at a hardware startup in Tucson.</p>
+      <div class="facts">
+        <div><span>Degree</span><b>B.S. Information Systems</b></div>
+        <div><span>Minor</span><b>Statistics</b></div>
+        <div><span>GPA</span><b>3.82 / 4.00</b></div>
+        <div><span>Graduation</span><b>April 2028</b></div>
+        <div><span>Languages</span><b>English, Mongolian</b></div>
+        <div><span>Recognition</span><b>Eagle Scout</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="tint">
+  <div class="wrap grid2">
+    <div class="sec-title" style="display:block"><h2>Projects</h2></div>
+    <div>
+      <article class="project">
+        <div class="top"><h3>Marks Investment Analytics</h3><span class="badge">Live</span></div>
+        <div class="meta">Personal finance web app · July 2026 – present</div>
+        <ul>
+          <li>Built and deployed a live personal finance web app in Next.js, TypeScript, React, and Tailwind CSS</li>
+          <li>Coded 10+ calculators in TypeScript with interactive charts, covering mortgage, budget, and retirement</li>
+          <li>Integrated live market data through a Yahoo Finance API layer, with Supabase (PostgreSQL) for storage</li>
+          <li>Managed the codebase in Git/GitHub with continuous deployment on Vercel</li>
+          <li>Directed and reviewed all development using AI coding tools; made the stack and architecture decisions</li>
+        </ul>
+        <div class="tags"><span>Next.js</span><span>TypeScript</span><span>React</span><span>Tailwind CSS</span><span>Supabase</span><span>Vercel</span></div>
+        <div class="links">
+          <a href="https://marks-financial-services.vercel.app" target="_blank">Live site →</a>
+          <a href="https://github.com/JasonMarks22/Marks-Financial-Services" target="_blank">Source code →</a>
+        </div>
+      </article>
+      <div class="repos-head"><span>Public repositories</span><a href="https://github.com/JasonMarks22" target="_blank">View GitHub profile →</a></div>
+      <div class="repos" id="repos"><p style="color:var(--muted);font-size:14px">Loading…</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap grid2">
+    <div class="sec-title" style="display:block"><h2>Experience</h2></div>
+    <div>
+      <div class="job">
+        <h3>Accounting Intern</h3><div class="when">Apr 2026 – Present</div>
+        <div class="org">Reef Capital Partners · Lehi, UT</div>
+        <ul><li>Consolidate financials across 50+ entities and properties to support reporting and analysis</li>
+          <li>Maintain and organize investment records for 700+ investors using proprietary data tools</li>
+          <li>Code and process invoices across Xero and internal platforms, ensuring accuracy and timely approval</li>
+          <li>Support month-end close by reconciling bank accounts and financial statements for 50+ entities</li></ul>
+      </div>
+      <div class="job">
+        <h3>Accountant 1</h3><div class="when">Aug 2025 – Present</div>
+        <div class="org">BYU Dining Services · Provo, UT</div>
+        <ul><li>Perform internal audits on 15 dining locations, reducing inventory misstatements by $100,000+ quarterly</li>
+          <li>Developed Excel models to automate recurring financial reports, reducing processing time</li>
+          <li>Process 100+ invoices weekly for 30 campus locations, increasing efficiency by 15%</li>
+          <li>Resolve supplier invoice issues and secure credits, saving $3,000+ quarterly</li></ul>
+      </div>
+      <div class="job">
+        <h3>Volunteer Representative &amp; ESL Teacher</h3><div class="when">May 2023 – Jun 2025</div>
+        <div class="org">The Church of Jesus Christ of Latter-day Saints · Ulaanbaatar, Mongolia</div>
+        <ul><li>Taught English through American Conversational English, designing lesson plans for hundreds of students</li>
+          <li>Mentored 3 new volunteers, overseeing their development and cultural integration</li>
+          <li>Coordinated community service projects totaling 300+ hours</li></ul>
+      </div>
+      <div class="job">
+        <h3>Production Engineer</h3><div class="when">Aug 2021 – May 2022</div>
+        <div class="org">Cooksy (startup) · Tucson, AZ</div>
+        <ul><li>Designed the end-to-end manufacturing and assembly workflow for a smart cooking assistant</li>
+          <li>Collaborated with executive leadership to integrate Design for Manufacturing into future products</li></ul>
+      </div>
+      <div class="job">
+        <h3>B.S. Information Systems, Minor in Statistics</h3><div class="when">Expected Apr 2028</div>
+        <div class="org">Brigham Young University · Marriott School of Business</div>
+        <ul><li>GPA 3.82 / 4.00 · Vice President, BYU Trivia Club</li>
+          <li>Member: Association for Information Systems, AI in Business Society, BYU Accounting Society, Corporate Finance &amp; Advisory Association</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="tint">
+  <div class="wrap grid2">
+    <div class="sec-title" style="display:block"><h2>Skills</h2></div>
+    <div class="skills">
+      <div><h4>Development</h4><div class="tags"><span>Python</span><span>JavaScript</span><span>TypeScript</span><span>React / Next.js</span><span>HTML / CSS</span><span>Tailwind CSS</span><span>Bootstrap</span></div></div>
+      <div><h4>Data &amp; Analytics</h4><div class="tags"><span>SQL / PostgreSQL</span><span>Supabase</span><span>Tableau</span><span>Microsoft Excel</span><span>Statistics</span></div></div>
+      <div><h4>AI</h4><div class="tags"><span>Claude Code</span><span>AI-assisted development</span></div></div>
+      <div><h4>Tools</h4><div class="tags"><span>Git / GitHub</span><span>Vercel</span><span>Xero</span><span>Microsoft Office</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2 class="big">Let's connect</h2>
+    <p>I'm seeking Summer 2027 internships in data engineering, machine learning, and software development.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:jasonvmarks@gmail.com">Email jasonvmarks@gmail.com</a>
+      <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn</a>
+      <a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Résumé (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© <span id="yr"></span> Jason Marks</span><span>Header image: ESO/S. Brunier (CC BY 4.0)</span></div></footer>
+
+<script>
+const GITHUB_USER = "JasonMarks22", HIDE = ["jasonmarks22", "jasonmarks22.github.io"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+$("yr").textContent = new Date().getFullYear();
+const nav = $("nav"), onScroll = () => nav.classList.toggle("solid", scrollY > 60); addEventListener("scroll", onScroll); onScroll();
+fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
+  .then(r => { if (!r.ok) throw 0; return r.json(); })
+  .then(repos => {
+    const list = repos.filter(r => !r.fork && !HIDE.includes(r.name.toLowerCase()))
+      .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at));
+    $("repos").innerHTML = list.length ? list.map(r => `
+      <a class="repo" href="${r.html_url}" target="_blank">
+        <h4>${esc(r.name)}</h4>
+        <p>${esc(r.description || "No description yet.")}</p>
+        <div class="meta">${esc(r.language || "")}${r.language ? " · " : ""}Updated ${new Date(r.pushed_at).toLocaleDateString("en-US",{month:"short",year:"numeric"})}</div>
+      </a>`).join("") : `<p style="color:var(--muted);font-size:14px">More projects coming soon.</p>`;
+  })
+  .catch(() => $("repos").innerHTML = `<p style="font-size:14px"><a style="color:var(--accent)" href="https://github.com/${GITHUB_USER}" target="_blank">View repositories on GitHub →</a></p>`);
+</script>
+</body>
+</html>
