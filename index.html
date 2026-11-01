@@ -99,7 +99,7 @@ section{padding:110px 0}
 .kv b{color:var(--muted);font-weight:400}
 
 /* missions */
-.featured{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-bottom:60px}
+.featured{display:grid;grid-template-columns:1fr;gap:22px;margin-bottom:60px}
 .mission{padding:0;overflow:hidden;transition:.25s}
 .mission:hover{border-color:var(--amber);transform:translateY(-4px);box-shadow:0 20px 50px -20px rgba(255,181,71,.25)}
 .mission .inner{padding:26px}
@@ -211,12 +211,6 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
     </div>
   </header>
 
-  <div class="telemetry reveal">
-    <div><div class="n mono" data-count="3.82" data-dec="2">0</div><div class="l mono">GPA / 4.00</div></div>
-    <div><div class="n mono" data-count="50" data-suf="+">0</div><div class="l mono">ENTITIES CONSOLIDATED</div></div>
-    <div><div class="n mono" data-count="700" data-suf="+">0</div><div class="l mono">INVESTOR RECORDS</div></div>
-    <div><div class="n mono" data-count="100" data-pre="$" data-suf="K+">0</div><div class="l mono">MISSTATEMENTS CUT / QTR</div></div>
-  </div>
 
   <!-- ABOUT -->
   <section id="about">
@@ -266,20 +260,6 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
         </div>
       </article>
 
-      <article class="panel mission reveal">
-        <div class="bar mono"><span>MISSION 002</span><span>COMPLETE</span></div>
-        <div class="inner">
-          <h3>BYU Portfolio + Memory Match</h3>
-          <div class="role mono">Front-end · Dec 2025</div>
-          <ul>
-            <li>Multi-page responsive site in HTML/CSS with BYU brand styling and custom navigation</li>
-            <li>JavaScript memory-match game: card-flip logic, a shuffle algorithm, DOM manipulation</li>
-            <li>Bootstrap grid plus an embedded interactive Tableau visualization</li>
-          </ul>
-          <div class="chips"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Bootstrap</span><span>Tableau</span></div>
-          <div class="links"><a id="gh-btn2" target="_blank">Source →</a></div>
-        </div>
-      </article>
     </div>
 
     <p class="repo-head mono">$ git ls-remote <b>github.com/<span id="gh-user"></span></b></p>
@@ -376,7 +356,7 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 $("yr").textContent = new Date().getFullYear();
 $("gh-user").textContent = GITHUB_USER;
-["gh-btn","gh-btn2","gh-btn3"].forEach(id => $(id).href = `https://github.com/${GITHUB_USER}`);
+["gh-btn","gh-btn3"].forEach(id => $(id).href = `https://github.com/${GITHUB_USER}`);
 
 // clock (Mountain Time)
 const tick = () => $("clock").textContent = "PROVO " + new Date().toLocaleTimeString("en-US",{timeZone:"America/Denver",hour12:false}) + " MT";
