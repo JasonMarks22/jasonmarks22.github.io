@@ -19,11 +19,11 @@ window.PROJECTS = [
     title: "Marks Investment Analytics",
     status: "Live",
     dates: "Jul 2026 – now",
-    summary: "A full-stack personal finance platform running on live market data.",
+    summary: "A full-stack personal finance platform built on live market data, with simulations, backtesting, and analytics.",
     features: [
       ["Market trends & stock pages", "Yahoo Finance API"],
       ["Monte Carlo simulator", "1,000 simulated paths"],
-      ["Portfolio builder & compare", "allocation tools"],
+      ["Portfolio backtesting & grading", "historical price data"],
       ["Mortgage, budget, retirement, debt", "10+ calculators"],
       ["Accounts & saved data", "Supabase · Postgres"]
     ],
