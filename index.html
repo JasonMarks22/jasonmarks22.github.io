@@ -121,6 +121,13 @@ section{padding:80px 0}
 .side h4{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
 .side li{list-style:none;font-size:15px;color:var(--text);padding:3px 0}
 .side li small{color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11.5px;margin-left:6px}
+/* coursework */
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.course{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:16px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.course b{display:block;font-family:var(--display);font-weight:600;font-size:16px;color:var(--text)}
+.course span{font-size:13.5px;color:var(--muted)}
+.course em{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:11px;white-space:nowrap;padding:3px 7px;border:1px solid var(--line2);border-radius:2px;color:var(--soft)}
+.course em.now{background:var(--navy);border-color:var(--navy);color:#ececea}
 /* project */
 .proj{display:grid;grid-template-columns:1.35fr 1fr;gap:40px}
 .proj>*,.log>*,.hero>*{min-width:0}
@@ -200,13 +207,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .nav nav a.active::after{display:none}
   .hero .grid,.proj,.log,.about{grid-template-columns:1fr}
   .paths{grid-template-columns:1fr}
+  .courses{grid-template-columns:1fr 1fr}
   .hero h1{white-space:normal}
   .row{grid-template-columns:1fr;gap:8px}
   .skills{grid-template-columns:1fr 1fr}
   section{padding:80px 0}
   .shots{margin-bottom:60px}
 }
-@media(max-width:560px){.contact{padding:32px}.skills{grid-template-columns:1fr}.commit{grid-template-columns:60px 1fr}.commit .when{display:none}}
+@media(max-width:560px){.courses{grid-template-columns:1fr}.contact{padding:32px}.skills{grid-template-columns:1fr}.commit{grid-template-columns:60px 1fr}.commit .when{display:none}}
 </style>
 </head>
 <body>
@@ -214,7 +222,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="nav">
   <div class="wrap">
     <a href="#" class="logo">jason<b>.</b>marks</a>
-    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#activity">Repos</a><a href="#stack">Stack</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#activity">Repos</a><a href="#stack">Stack</a><a href="#coursework">Courses</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
     <div class="right">
       <a href="Jason_Marks_Resume.pdf" target="_blank" class="btn" style="padding:7px 14px;font-size:13px">Résumé ↗</a>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
@@ -263,7 +271,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       </div>
       <div class="side">
         <div class="grp"><h4>Looking for</h4><ul><li>Software internships</li><li>Part-time work</li></ul></div>
-        <div class="grp"><h4>Learning now</h4><ul><li>Data structures <small>IS 537</small></li><li>C++ <small>self-study</small></li><li>Linear algebra</li></ul></div>
+        <div class="grp"><h4>Learning now</h4><ul><li>Database systems &amp; SQL</li><li>Data modeling</li><li>C++ <small>self-study</small></li></ul></div>
         <div class="grp"><h4>Next</h4><ul><li>B.S. Information Systems <small>2028</small></li><li>M.S. Computer Science <small>planned</small></li></ul></div>
       </div>
     </div>
@@ -314,6 +322,20 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       <div><h4>Languages</h4><ul><li>TypeScript</li><li>JavaScript</li><li>Python</li><li>SQL</li></ul></div>
       <div><h4>Frameworks &amp; data</h4><ul><li>React</li><li>Next.js</li><li>Tailwind CSS</li><li>PostgreSQL</li><li>Supabase</li></ul></div>
       <div><h4>Tools</h4><ul><li>Git &amp; GitHub</li><li>Vercel CI/CD</li><li>Claude Code</li><li>VS Code</li><li>Excel</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="coursework" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><h2>Relevant coursework</h2></div>
+    <div class="courses reveal">
+      <div class="course"><div><b>Data Structures</b><span>IS 537</span></div><em>Winter 2027</em></div>
+      <div class="course"><div><b>Database Systems &amp; SQL</b><span>Information Systems</span></div><em class="now">In progress</em></div>
+      <div class="course"><div><b>Data Modeling</b><span>Information Systems</span></div><em class="now">In progress</em></div>
+      <div class="course"><div><b>Data Engineering</b><span>Information Systems</span></div><em>Winter 2027</em></div>
+      <div class="course"><div><b>Statistics</b><span>Minor coursework</span></div><em class="now">In progress</em></div>
+      <div class="course"><div><b>Calculus I–III</b><span>Mathematics</span></div><em>Complete</em></div>
     </div>
   </div>
 </section>
@@ -381,7 +403,9 @@ tools       Git, GitHub, Vercel, Claude Code`,
 2025–now   Accountant 1 · BYU Dining Services
 2023–2025  Volunteer & ESL Teacher · Ulaanbaatar, Mongolia`,
   education: () => `B.S. Information Systems, minor in Statistics
-Brigham Young University · expected April 2028 · GPA 3.82`,
+Brigham Young University · expected April 2028 · GPA 3.82
+courses: Data Structures, Database Systems & SQL, Data Modeling,
+         Data Engineering, Statistics, Calculus I–III`,
   contact: () => `email     <a href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a>
 phone     <a href="tel:+15204424449">(520) 442-4449</a>
 linkedin  <a href="https://www.linkedin.com/in/jasonmarks10" target="_blank">linkedin.com/in/jasonmarks10</a>
