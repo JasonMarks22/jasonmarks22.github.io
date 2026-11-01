@@ -37,12 +37,14 @@ a{color:inherit;text-decoration:none}
 #scene{position:absolute;inset:0;background:#020305}
 #scene canvas{display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1.6s ease}
 #scene.ready canvas{opacity:1}
+#radar{position:absolute;z-index:3;right:4vw;top:50%;transform:translateY(-46%);width:min(35vw,540px);aspect-ratio:1}
+#radar canvas{width:100%;height:100%;display:block}
 .hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(90deg,rgba(3,4,6,.88) 0%,rgba(3,4,6,.55) 38%,rgba(3,4,6,0) 62%),linear-gradient(0deg,var(--bg) 0%,rgba(5,7,10,0) 22%)}
 .hero-content{position:absolute;left:0;right:0;top:50%;transform:translateY(-44%);z-index:3}
 .hero-content .wrap{max-width:none;padding:0 40px 0 max(40px,7vw)}
 .hero .kicker{font-size:11.5px;letter-spacing:.42em;color:var(--soft);text-transform:uppercase;margin-bottom:26px}
-h1{font-size:clamp(44px,7vw,100px);font-weight:200;letter-spacing:.16em;line-height:1.02;text-transform:uppercase;
+h1{font-size:clamp(44px,6vw,92px);font-weight:200;letter-spacing:.16em;line-height:1.02;text-transform:uppercase;
   text-shadow:0 2px 40px rgba(0,0,0,.6)}
 .type{margin:30px 0 38px;font-size:14px;color:var(--soft);min-height:22px;text-shadow:0 1px 12px rgba(0,0,0,.8)}
 .type b{color:var(--accent);font-weight:400}
@@ -152,6 +154,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
   h1{letter-spacing:.1em}
   .hero::after{background:linear-gradient(0deg,rgba(3,4,6,.9) 30%,rgba(3,4,6,.2) 70%,rgba(3,4,6,.5) 100%)}
   .hero-content{top:auto;bottom:64px;transform:none}
+  #radar{right:50%;transform:translateX(50%);top:110px;width:min(78vw,380px)}
   .hero-content .wrap{padding:0 22px}
 }
 @media(prefers-reduced-motion:reduce){.fade{opacity:1;transform:none;transition:none}}
@@ -175,9 +178,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 
 <header class="hero">
   <div id="scene" aria-hidden="true"></div>
+  <div id="radar"><canvas id="scope" aria-label="Radar sweep detecting skills"></canvas></div>
 
-  <div class="hud tl mono"><span class="live">● LIVE</span> · EARTH VIEW<br>AXIAL TILT <b>23.4°</b> · <span id="sunstate">SUN TRACKING</span></div>
-  <div class="hud tr mono">IMAGERY · <b>NASA BLUE MARBLE</b><br>SKY · <b>ESO MILKY WAY</b></div>
+  <div class="hud tl mono"><span class="live">● LIVE</span> · SKILL SCAN<br>SWEEP <b>6 RPM</b> · RANGE <b>4 NM</b></div>
+  <div class="hud tr mono">CONTACTS <b id="contacts">0</b> / 8<br>SKY · <b>ESO MILKY WAY</b></div>
   <div class="hud bl mono">BASE · PROVO, UT<br>LAT <b>40.23°N</b> · LON <b>111.66°W</b></div>
   <div class="hud br mono">MISSION CLOCK<br><b id="utc">--:--:--</b> UTC</div>
 
@@ -311,7 +315,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 </section>
 
 <footer><div class="wrap mono"><span>© <span id="yr"></span> JASON MARKS</span><span>PROVO, UT · 40.23°N 111.66°W</span></div>
-<div class="wrap credit mono">EARTH IMAGERY: NASA BLUE MARBLE &amp; EARTH OBSERVATORY · MILKY WAY PANORAMA: ESO/S. BRUNIER (CC BY 4.0)</div></footer>
+<div class="wrap credit mono">MILKY WAY PANORAMA: ESO/S. BRUNIER (CC BY 4.0)</div></footer>
 
 <script>
 const GITHUB_USER = "JasonMarks22";
@@ -375,75 +379,93 @@ const sky = new THREE.Mesh(new THREE.SphereGeometry(90, 64, 32), skyMat);
 sky.rotation.y = Math.PI / 2 + .25;                    // bring the galactic core into view
 const skyG = new THREE.Group(); skyG.add(sky); skyG.rotation.z = -.42; skyG.rotation.x = .12; scene.add(skyG);
 
-// Earth (NASA Blue Marble day, city lights, clouds, water mask)
-const sun = new THREE.Vector3(-.75, .3, .6).normalize();
-const earthMat = new THREE.ShaderMaterial({
-  uniforms: {day: {value: null}, night: {value: null}, water: {value: null}, sunDir: {value: sun}},
-  vertexShader: `varying vec2 vUv; varying vec3 vN; varying vec3 vV;
-    void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); vec4 wp = modelMatrix * vec4(position,1.); vV = normalize(cameraPosition - wp.xyz); gl_Position = projectionMatrix * viewMatrix * wp; }`,
-  fragmentShader: `uniform sampler2D day, night, water; uniform vec3 sunDir; varying vec2 vUv; varying vec3 vN; varying vec3 vV;
-    void main(){
-      float d = dot(normalize(vN), sunDir);
-      float dayMix = smoothstep(-.12, .22, d);
-      vec3 dc = texture2D(day, vUv).rgb, nc = texture2D(night, vUv).rgb * vec3(1., .82, .6) * 1.15;
-      float w = texture2D(water, vUv).r;
-      vec3 h = normalize(sunDir + vV); float spec = pow(max(dot(normalize(vN), h), 0.), 40.) * w * .55;
-      vec3 col = dc * (.06 + .94 * max(d, 0.)) + vec3(1., .95, .88) * spec * dayMix;
-      col = mix(nc * (1. - dayMix), col, dayMix);
-      float rim = pow(1. - max(dot(normalize(vN), vV), 0.), 3.);
-      col += vec3(.30, .55, 1.) * rim * .55 * smoothstep(-.3, .5, d);
-      gl_FragColor = vec4(col, 1.);
-      #include <colorspace_fragment>
-    }`});
-const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 64), earthMat);
-const tiltG = new THREE.Group(); tiltG.rotation.z = 23.4 * Math.PI / 180; tiltG.add(earth); scene.add(tiltG);
 
-const cloudMat = new THREE.ShaderMaterial({transparent: true, depthWrite: false,
-  uniforms: {clouds: {value: null}, sunDir: {value: sun}},
-  vertexShader: `varying vec2 vUv; varying vec3 vN; void main(){ vUv = uv; vN = normalize(mat3(modelMatrix) * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
-  fragmentShader: `uniform sampler2D clouds; uniform vec3 sunDir; varying vec2 vUv; varying vec3 vN;
-    void main(){ float c = texture2D(clouds, vUv).r; float d = dot(normalize(vN), sunDir);
-      float l = smoothstep(-.15, .35, d); gl_FragColor = vec4(vec3(.95) * (.04 + .96 * l), c * .9); }`});
-const cloudMesh = new THREE.Mesh(new THREE.SphereGeometry(1.008, 128, 64), cloudMat); tiltG.add(cloudMesh);
-
-// thin atmosphere halo (view-space fresnel)
-const atm = new THREE.Mesh(new THREE.SphereGeometry(1.045, 96, 48), new THREE.ShaderMaterial({
-  side: THREE.BackSide, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, uniforms: {sunDir: {value: sun}},
-  vertexShader: `varying vec3 vNv; varying vec3 vNw; void main(){ vNv = normalize(normalMatrix * normal); vNw = normalize(mat3(modelMatrix) * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
-  fragmentShader: `uniform vec3 sunDir; varying vec3 vNv; varying vec3 vNw;
-    void main(){ float i = pow(clamp(.62 + dot(vNv, vec3(0.,0.,1.)), 0., 1.), 4.);
-      float lit = smoothstep(-.35, .45, dot(-vNw, -sunDir) * -1. + .2);
-      gl_FragColor = vec4(vec3(.32, .55, 1.) * i * .9 * (.15 + .85 * lit), 1.); }`}));
-scene.add(atm);
-
-function layout(){
-  const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
-  const mobile = w < 900;
-  camera.position.set(0, 0, mobile ? 6.8 : 7.0); camera.updateProjectionMatrix();
-  // place Earth off to the right (desktop) or upper area (mobile)
-  const visH = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z, visW = visH * camera.aspect;
-  const x = mobile ? 0 : visW * .335, y = mobile ? visH * .2 : -visH * .02;
-  tiltG.position.set(x, y, 0); atm.position.copy(tiltG.position);
-}
+function layout(){ const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.position.set(0, 0, 5); camera.updateProjectionMatrix(); }
 addEventListener("resize", layout);
 
-const [day, night, water, clouds, mw] = await Promise.all([
-  tex("assets/earth-day.jpg"), tex("assets/earth-night.jpg"), tex("assets/earth-water.jpg", false), tex("assets/earth-clouds.jpg", false),
-  tex("https://cdn.eso.org/images/large/eso0932a.jpg")]);
-Object.assign(earthMat.uniforms, {day: {value: day}, night: {value: night}, water: {value: water}, sunDir: {value: sun}});
-cloudMat.uniforms.clouds.value = clouds;
+const mw = await tex("https://cdn.eso.org/images/large/eso0932a.jpg");
 if (mw) { skyMat.map = mw; skyMat.needsUpdate = true; } else skyMat.color.set(0x000000);
-earth.rotation.y = -2.0; cloudMesh.rotation.y = -2.0;
 layout(); host.classList.add("ready");
 
 let mx = 0, my = 0; addEventListener("pointermove", e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
 let lastT = performance.now();
 renderer.setAnimationLoop(() => {
   const now = performance.now(), dt = Math.min((now - lastT) / 1000, .05); lastT = now;
-  if (!reduce) { earth.rotation.y += dt * .035; cloudMesh.rotation.y += dt * .042; sky.rotation.y += dt * .002;
-    camera.position.x += (mx * .18 - camera.position.x) * .03; camera.position.y += (-my * .12 - camera.position.y) * .03; camera.lookAt(0, 0, 0); }
+  if (!reduce) { sky.rotation.y += dt * .002;
+    camera.rotation.y += (-mx * .03 - camera.rotation.y) * .03; camera.rotation.x += (-my * .02 - camera.rotation.x) * .03; }
   renderer.render(scene, camera);
 });
+</script>
+<script>
+(function(){
+  const cv = document.getElementById("scope"), g = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const skills = [
+    {n:"PYTHON", a:.35, r:.62}, {n:"SQL", a:1.25, r:.38}, {n:"TYPESCRIPT", a:2.05, r:.74}, {n:"REACT", a:2.85, r:.5},
+    {n:"SUPABASE", a:3.6, r:.68}, {n:"TABLEAU", a:4.35, r:.32}, {n:"STATISTICS", a:5.05, r:.58}, {n:"NEXT.JS", a:5.8, r:.8}];
+  skills.forEach(s => s.hit = -99);
+  const found = new Set(); const cnt = document.getElementById("contacts");
+  let S, C, R, noise;
+  function size(){ const d = Math.min(devicePixelRatio || 1, 2), w = cv.clientWidth; cv.width = cv.height = w * d; g.setTransform(d,0,0,d,0,0); S = w; C = w / 2; R = w * .41;
+    // static phosphor grain
+    noise = document.createElement("canvas"); noise.width = noise.height = w; const n = noise.getContext("2d");
+    for (let i = 0; i < w * 9; i++) { const a = Math.random() * 6.283, r = Math.sqrt(Math.random()) * R; n.fillStyle = `rgba(110,220,150,${Math.random() * .06})`; n.fillRect(C + Math.cos(a) * r, C + Math.sin(a) * r, 1, 1); } }
+  addEventListener("resize", size); size();
+  const G = (a) => `rgba(110,230,150,${a})`;
+  const start = performance.now();
+  function frame(now){
+    const t = (now - start) / 1000, sweep = reduce ? 1.1 : (t * .63) % 6.2832;  // ~6 rpm
+    g.clearRect(0, 0, S, S);
+    // scope glass
+    const bg = g.createRadialGradient(C, C, 0, C, C, R * 1.02);
+    bg.addColorStop(0, "rgba(6,22,14,.62)"); bg.addColorStop(.85, "rgba(3,12,8,.66)"); bg.addColorStop(1, "rgba(2,6,4,.75)");
+    g.fillStyle = bg; g.beginPath(); g.arc(C, C, R, 0, 6.283); g.fill();
+    g.drawImage(noise, 0, 0, S, S);
+    // bezel
+    g.strokeStyle = "rgba(255,255,255,.14)"; g.lineWidth = 1; g.beginPath(); g.arc(C, C, R + 6, 0, 6.283); g.stroke();
+    g.strokeStyle = G(.35); g.beginPath(); g.arc(C, C, R, 0, 6.283); g.stroke();
+    // range rings + crosshair
+    g.strokeStyle = G(.13); for (const k of [.25, .5, .75]) { g.beginPath(); g.arc(C, C, R * k, 0, 6.283); g.stroke(); }
+    g.beginPath(); g.moveTo(C - R, C); g.lineTo(C + R, C); g.moveTo(C, C - R); g.lineTo(C, C + R); g.stroke();
+    g.save(); g.setLineDash([2, 5]); g.beginPath(); g.moveTo(C - R * .707, C - R * .707); g.lineTo(C + R * .707, C + R * .707); g.moveTo(C + R * .707, C - R * .707); g.lineTo(C - R * .707, C + R * .707); g.stroke(); g.restore();
+    // degree ticks + labels
+    g.font = '500 9px "JetBrains Mono", monospace'; g.textAlign = "center"; g.textBaseline = "middle";
+    for (let d = 0; d < 360; d += 5) { const a = (d - 90) * Math.PI / 180, l = d % 30 ? 4 : 9;
+      g.strokeStyle = G(d % 30 ? .25 : .5); g.beginPath(); g.moveTo(C + Math.cos(a) * (R + 6), C + Math.sin(a) * (R + 6)); g.lineTo(C + Math.cos(a) * (R + 6 + l), C + Math.sin(a) * (R + 6 + l)); g.stroke();
+      if (d % 30 === 0) { g.fillStyle = "rgba(200,210,220,.55)"; g.fillText(String(d).padStart(3, "0"), C + Math.cos(a) * (R + 24), C + Math.sin(a) * (R + 24)); } }
+    // sweep trail
+    g.save(); g.beginPath(); g.arc(C, C, R, 0, 6.283); g.clip();
+    const tail = 1.3;
+    if (g.createConicGradient) { const cg = g.createConicGradient(sweep - tail, C, C);
+      cg.addColorStop(0, G(0)); cg.addColorStop(tail / 6.2832 * .7, G(.06)); cg.addColorStop(tail / 6.2832, G(.32)); cg.addColorStop(tail / 6.2832 + .0005, G(0)); cg.addColorStop(1, G(0));
+      g.fillStyle = cg; g.beginPath(); g.moveTo(C, C); g.arc(C, C, R, sweep - tail, sweep); g.closePath(); g.fill(); }
+    // sweep line
+    const lg = g.createLinearGradient(C, C, C + Math.cos(sweep) * R, C + Math.sin(sweep) * R); lg.addColorStop(0, G(.2)); lg.addColorStop(1, G(.95));
+    g.strokeStyle = lg; g.lineWidth = 1.5; g.shadowColor = G(.8); g.shadowBlur = 8;
+    g.beginPath(); g.moveTo(C, C); g.lineTo(C + Math.cos(sweep) * R, C + Math.sin(sweep) * R); g.stroke(); g.shadowBlur = 0; g.restore();
+    // blips: light up when swept, then decay like phosphor
+    g.textAlign = "left";
+    for (const s of skills) {
+      let diff = sweep - s.a; diff -= Math.floor(diff / 6.2832) * 6.2832;
+      if (diff < .06 && t - s.hit > 1) { s.hit = t; if (!found.has(s.n)) { found.add(s.n); cnt.textContent = found.size; } }
+      const age = reduce ? 0 : t - s.hit, life = Math.max(0, 1 - age / 9.5); if (life <= 0 && !reduce) continue;
+      const x = C + Math.cos(s.a) * R * s.r, y = C + Math.sin(s.a) * R * s.r, a = reduce ? .9 : Math.pow(life, 1.4);
+      const glow = g.createRadialGradient(x, y, 0, x, y, 14); glow.addColorStop(0, G(.55 * a)); glow.addColorStop(1, G(0));
+      g.fillStyle = glow; g.beginPath(); g.arc(x, y, 14, 0, 6.283); g.fill();
+      g.fillStyle = `rgba(190,255,210,${a})`; g.beginPath(); g.arc(x, y, 2.6, 0, 6.283); g.fill();
+      if (age < .6 && !reduce) { g.strokeStyle = G((.6 - age) * 1.4); g.beginPath(); g.arc(x, y, 6 + age * 22, 0, 6.283); g.stroke(); }
+      // label with leader line
+      const flip = Math.cos(s.a) > .25, lx = flip ? x - 12 : x + 12, ly = y - 12, dir = flip ? -1 : 1; g.strokeStyle = G(.35 * a); g.lineWidth = 1; g.beginPath(); g.moveTo(x + 4 * dir, y - 4); g.lineTo(lx, ly); g.lineTo(lx + 8 * dir, ly); g.stroke(); g.textAlign = flip ? "right" : "left";
+      g.font = '500 10.5px "JetBrains Mono", monospace'; g.fillStyle = `rgba(215,235,222,${a * .95})`; g.fillText(s.n, lx + 11 * dir, ly);
+      g.font = '400 8.5px "JetBrains Mono", monospace'; g.fillStyle = `rgba(150,200,165,${a * .7})`;
+      g.fillText(`BRG ${String(Math.round(((s.a * 180 / Math.PI) + 90) % 360)).padStart(3,"0")} · RNG ${(s.r * 4).toFixed(1)}`, lx + 11 * dir, ly + 12);
+    }
+    // centre
+    g.fillStyle = G(.9); g.beginPath(); g.arc(C, C, 2.5, 0, 6.283); g.fill();
+    if (!reduce) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
