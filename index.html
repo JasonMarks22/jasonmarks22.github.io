@@ -214,7 +214,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="nav">
   <div class="wrap">
     <a href="#" class="logo">jason<b>.</b>marks</a>
-    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#activity">Repos</a><a href="#experience">Experience</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
+    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#activity">Repos</a><a href="#stack">Stack</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
     <div class="right">
       <a href="Jason_Marks_Resume.pdf" target="_blank" class="btn" style="padding:7px 14px;font-size:13px">Résumé ↗</a>
       <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
@@ -309,6 +309,17 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   </div>
 </section>
 
+<section id="stack" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><h2>Stack</h2></div>
+    <div class="skills reveal">
+      <div><h4>Languages</h4><ul><li>TypeScript</li><li>JavaScript</li><li>Python</li><li>SQL</li></ul></div>
+      <div><h4>Frameworks &amp; data</h4><ul><li>React</li><li>Next.js</li><li>Tailwind CSS</li><li>PostgreSQL</li><li>Supabase</li></ul></div>
+      <div><h4>Tools</h4><ul><li>Git &amp; GitHub</li><li>Vercel CI/CD</li><li>Claude Code</li><li>VS Code</li><li>Excel</li></ul></div>
+    </div>
+  </div>
+</section>
+
 <section id="experience" style="padding-top:0">
   <div class="wrap">
     <div class="head reveal"><h2>Experience</h2></div>
@@ -319,21 +330,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
         <ul><li>Built Excel models that automate recurring reports</li><li>Audits across 15 locations cut misstatements $100K+/qtr</li></ul></div>
       <div class="row reveal"><div class="when">MAY 2023 — JUN 2025</div><div><h3>Volunteer &amp; ESL Teacher</h3><div class="org">Ulaanbaatar, Mongolia</div></div>
         <ul><li>Taught English to hundreds of students</li><li>Advanced Mongolian speaker</li></ul></div>
-      <div class="row reveal"><div class="when">AUG 2021 — MAY 2022</div><div><h3>Production Engineer</h3><div class="org">Cooksy (startup) · Tucson, AZ</div></div>
-        <ul><li>Designed the manufacturing workflow for a smart cooking device</li></ul></div>
       <div class="row reveal"><div class="when">EXP. APR 2028</div><div><h3>B.S. Information Systems</h3><div class="org">BYU Marriott School · Minor in Statistics</div></div>
         <ul><li>GPA 3.82</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<section id="stack" style="padding-top:0">
-  <div class="wrap">
-    <div class="head reveal"><h2>Stack</h2></div>
-    <div class="skills reveal">
-      <div><h4>Languages</h4><ul><li>TypeScript</li><li>JavaScript</li><li>Python</li><li>SQL</li></ul></div>
-      <div><h4>Frameworks &amp; data</h4><ul><li>React</li><li>Next.js</li><li>Tailwind CSS</li><li>PostgreSQL</li><li>Supabase</li></ul></div>
-      <div><h4>Tools</h4><ul><li>Git &amp; GitHub</li><li>Vercel CI/CD</li><li>Claude Code</li><li>VS Code</li><li>Excel</li></ul></div>
     </div>
   </div>
 </section>
@@ -383,8 +381,7 @@ data        PostgreSQL, Supabase
 tools       Git, GitHub, Vercel, Claude Code`,
   experience: () => `2026–now   Accounting Intern · Reef Capital Partners
 2025–now   Accountant 1 · BYU Dining Services
-2023–2025  Volunteer & ESL Teacher · Ulaanbaatar, Mongolia
-2021–2022  Production Engineer · Cooksy (startup)`,
+2023–2025  Volunteer & ESL Teacher · Ulaanbaatar, Mongolia`,
   education: () => `B.S. Information Systems, minor in Statistics
 Brigham Young University · expected April 2028 · GPA 3.82`,
   contact: () => `email     <a href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a>
