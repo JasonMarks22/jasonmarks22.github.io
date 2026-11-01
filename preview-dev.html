@@ -91,7 +91,7 @@ section{padding:80px 0}
 .tech span{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--soft);border:1px solid var(--line2);padding:4px 9px;border-radius:5px}
 
 /* commits */
-.log{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.log{display:grid;grid-template-columns:1fr;gap:28px}
 .card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:24px}
 .card h4{font-size:13px;font-family:"JetBrains Mono",monospace;font-weight:500;color:var(--muted);margin-bottom:16px;display:flex;justify-content:space-between}
 .card h4 a{color:var(--soft);text-decoration:underline}
@@ -147,8 +147,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="nav">
   <div class="wrap">
     <a href="#" class="logo">jason<b>.</b>marks</a>
-    <nav><a href="#work">Work</a><a href="#activity">Commits</a><a href="#experience">Experience</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
-    <a href="Jason_Marks_Resume.pdf" target="_blank" class="mono" style="font-size:12.5px;color:var(--soft)">résumé ↗</a>
+    <nav><a href="#work">Work</a><a href="#activity">Repos</a><a href="#experience">Experience</a><a href="#stack">Stack</a><a href="#contact">Contact</a></nav>
+    <a href="Jason_Marks_Resume.pdf" target="_blank" class="btn" style="padding:7px 14px;font-size:13px">Résumé ↗</a>
   </div>
 </div>
 
@@ -163,6 +163,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
         <a class="btn hi" href="#work">See the work ↓</a>
         <a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub ↗</a>
         <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn ↗</a>
+        <a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Résumé ↗</a>
       </div>
     </div>
 
@@ -206,9 +207,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
 <section id="activity" style="padding-top:0">
   <div class="wrap">
-    <div class="head"><h2>Recent commits</h2></div>
+    <div class="head"><h2>Repositories</h2></div>
     <div class="log">
-      <div class="card"><h4><span>$ git log --oneline</span><a href="https://github.com/JasonMarks22" target="_blank">github ↗</a></h4><div id="commits"><p class="empty">fetching commits…</p></div></div>
       <div class="card"><h4><span>$ ls ~/repos</span><span id="repocount"></span></h4><div id="repos"><p class="empty">fetching repos…</p></div></div>
     </div>
   </div>
@@ -247,11 +247,11 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <div class="contact" id="contact">
     <div class="head"><h2>Contact</h2></div>
     <p>Looking for a Summer 2027 software engineering internship. Provo, Utah, open to relocating.</p>
-    <div class="btns"><a class="btn hi" href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a><a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn ↗</a><a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub ↗</a><a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Résumé</a></div>
+    <div class="btns"><a class="btn hi" href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a><a class="btn" href="tel:+15204424449">(520) 442-4449</a><a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn ↗</a><a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub ↗</a><a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Résumé</a></div>
   </div>
 </div>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Jason Marks · Provo, UT</span><span><a href="https://github.com/JasonMarks22/jasonmarks22.github.io" target="_blank" style="text-decoration:underline">source</a></span></div></footer>
+<footer><div class="wrap"><span>© <span id="yr"></span> Jason Marks · Provo, UT · <a href="tel:+15204424449">(520) 442-4449</a> · <a href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a></span><span><a href="https://github.com/JasonMarks22/jasonmarks22.github.io" target="_blank" style="text-decoration:underline">source</a></span></div></footer>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -290,6 +290,7 @@ tools       Git, GitHub, Vercel, Claude Code`,
   education: () => `B.S. Information Systems, minor in Statistics
 Brigham Young University · expected April 2028 · GPA 3.82`,
   contact: () => `email     <a href="mailto:jasonvmarks@gmail.com">jasonvmarks@gmail.com</a>
+phone     <a href="tel:+15204424449">(520) 442-4449</a>
 linkedin  <a href="https://www.linkedin.com/in/jasonmarks10" target="_blank">linkedin.com/in/jasonmarks10</a>
 github    <a href="https://github.com/JasonMarks22" target="_blank">github.com/JasonMarks22</a>`,
   resume: () => { window.open("Jason_Marks_Resume.pdf", "_blank"); return "opening Jason_Marks_Resume.pdf…"; },
@@ -325,16 +326,13 @@ print(`<span style="color:var(--muted)">This terminal works. Type <span class="b
 const ago = d => { const s = (Date.now() - new Date(d)) / 1000; if (s < 3600) return Math.max(1, Math.round(s / 60)) + "m ago"; if (s < 86400) return Math.round(s / 3600) + "h ago"; if (s < 2592000) return Math.round(s / 86400) + "d ago"; return new Date(d).toLocaleDateString("en-US",{month:"short",year:"numeric"}); };
 fetch("https://api.github.com/users/JasonMarks22/repos?per_page=100&sort=pushed")
   .then(r => { if (!r.ok) throw 0; return r.json(); })
-  .then(async repos => {
+  .then(repos => {
     const own = repos.filter(r => !r.fork);
     const shown = own.filter(r => r.name.toLowerCase() !== "jasonmarks22");
     $("repocount").textContent = shown.length + " public";
     $("repos").innerHTML = shown.map(r => `<a class="repo" href="${r.html_url}" target="_blank"><b>${esc(r.name)}</b><p>${esc(r.description || (r.name.endsWith(".github.io") ? "This website." : "No description yet."))}</p><small>${esc(r.language || "")}${r.language ? " · " : ""}pushed ${ago(r.pushed_at)}</small></a>`).join("") || `<p class="empty">No public repos yet.</p>`;
-    const lists = await Promise.all(shown.filter(r => !r.name.toLowerCase().endsWith(".github.io")).slice(0, 4).map(r => fetch(`https://api.github.com/repos/${r.full_name}/commits?per_page=8`).then(x => x.ok ? x.json() : []).then(cs => cs.map(c => ({repo: r.name, sha: c.sha, msg: c.commit.message.split("\n")[0], date: c.commit.author.date, url: c.html_url}))).catch(() => [])));
-    const commits = lists.flat().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 9);
-    $("commits").innerHTML = commits.length ? commits.map(c => `<a class="commit" href="${c.url}" target="_blank" title="${esc(c.repo)}: ${esc(c.msg)}"><span class="sha">${c.sha.slice(0, 7)}</span><span class="msg">${esc(c.msg)}</span><span class="when">${ago(c.date)}</span></a>`).join("") : `<p class="empty">No commits to show.</p>`;
   })
-  .catch(() => { $("repos").innerHTML = `<p class="empty"><a href="https://github.com/JasonMarks22" target="_blank" style="text-decoration:underline">View on GitHub ↗</a></p>`; $("commits").innerHTML = `<p class="empty">GitHub is rate-limiting right now. <a href="https://github.com/JasonMarks22" target="_blank" style="text-decoration:underline">See activity on GitHub ↗</a></p>`; });
+  .catch(() => { $("repos").innerHTML = `<p class="empty"><a href="https://github.com/JasonMarks22" target="_blank" style="text-decoration:underline">View on GitHub ↗</a></p>`; });
 </script>
 </body>
 </html>
