@@ -126,7 +126,10 @@ section{padding:80px 0}
 .proj+.proj{margin-top:80px;padding-top:80px;border-top:1px solid var(--line)}
 .proj.flip .shots{order:2}
 .proj.solo{grid-template-columns:1fr}.proj.solo .info{max-width:720px}
-.proj .shots.n1 .s1{inset:0}.proj .shots.n1{aspect-ratio:1552/780;margin-bottom:0}
+.proj .shots.n1 .s1{position:relative;inset:auto;width:100%}.proj .shots.n1{aspect-ratio:auto;margin-bottom:0;align-self:start;position:sticky;top:90px}
+.info p.sum{font-size:18px;color:var(--text);margin-bottom:16px;line-height:1.5}
+.info p.desc{font-size:15.5px;color:var(--soft);margin-bottom:14px;line-height:1.65}
+.info .note{font-size:13.5px;color:var(--muted);font-style:italic;margin:4px 0 18px}
 .proj .shots.n2 .s1{inset:0 22% auto 0}.proj .shots.n2 .s2{width:62%;right:0;top:40%}.proj .shots.n2{margin-bottom:60px}
 .info .live.wip i{background:#d4d4d4;box-shadow:none}
 /* coursework */
@@ -214,6 +217,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .nav nav a.active::after{display:none}
   .hero .grid,.proj,.log,.about{grid-template-columns:1fr}
   .proj.flip .shots{order:0}
+  .proj .shots.n1{position:relative;top:auto}
   .paths{grid-template-columns:1fr}
   .cgroups{grid-template-columns:1fr 1fr}
   .hero h1{white-space:normal}
@@ -388,9 +392,10 @@ $("yr").textContent = new Date().getFullYear();
       <div class="info">
         ${st || p.dates ? `<div class="live${st === "LIVE" ? "" : " wip"}"><i></i>${esc([st, (p.dates || "").toUpperCase()].filter(Boolean).join(" · "))}</div>` : ""}
         <h3>${esc(p.title)}</h3>
-        <p>${esc(p.summary || "")}</p>
+        <p class="sum">${esc(p.summary || "")}</p>
+        ${(p.description || []).map(d => `<p class="desc">${esc(d)}</p>`).join("")}
         ${p.features && p.features.length ? `<ul class="feat">${p.features.map(([a, b]) => `<li>${esc(a)}<span>${esc(b || "")}</span></li>`).join("")}</ul>` : ""}
-        ${p.note ? `<p style="font-size:14px">${esc(p.note)}</p>` : ""}
+        ${p.note ? `<p class="note">${esc(p.note)}</p>` : ""}
         ${p.tech && p.tech.length ? `<div class="tech">${p.tech.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
         ${links ? `<div class="btns" style="margin-top:0">${links}</div>` : ""}
       </div></div>`;
