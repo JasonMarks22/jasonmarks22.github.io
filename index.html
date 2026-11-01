@@ -378,7 +378,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="toast" id="toast" role="status"></div>
 <footer><div class="wrap"><span>© <span id="yr"></span> Jason Marks · Provo, UT · <a href="tel:+15204424449">(520) 442-4449</a> · <a class="copy-email" href="mailto:jasonvmarks@gmail.com" title="Click to copy">jasonvmarks@gmail.com</a></span><span>Photos: <a href="https://unsplash.com/photos/WRL2FysCfds" target="_blank">Daniel Shapiro</a> &amp; <a href="https://unsplash.com/photos/VQcn7hnJbjE" target="_blank">Danny Burke</a> on Unsplash · <a href="https://github.com/JasonMarks22/jasonmarks22.github.io" target="_blank" style="text-decoration:underline">source</a></span></div></footer>
 
-<script src="assets/projects.js"></script>
+<script>/* always load the newest project list (bypasses browser cache) */document.write('<script src="assets/projects.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
