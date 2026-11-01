@@ -418,21 +418,21 @@ renderer.setAnimationLoop(() => {
     g.clearRect(0, 0, S, S);
     // scope glass
     const bg = g.createRadialGradient(C, C, 0, C, C, R * 1.02);
-    bg.addColorStop(0, "rgba(6,22,14,.62)"); bg.addColorStop(.85, "rgba(3,12,8,.66)"); bg.addColorStop(1, "rgba(2,6,4,.75)");
+    bg.addColorStop(0, "rgba(5,20,12,.80)"); bg.addColorStop(.85, "rgba(3,12,8,.84)"); bg.addColorStop(1, "rgba(2,6,4,.9)");
     g.fillStyle = bg; g.beginPath(); g.arc(C, C, R, 0, 6.283); g.fill();
     g.drawImage(noise, 0, 0, S, S);
     // bezel
     g.strokeStyle = "rgba(255,255,255,.14)"; g.lineWidth = 1; g.beginPath(); g.arc(C, C, R + 6, 0, 6.283); g.stroke();
     g.strokeStyle = G(.35); g.beginPath(); g.arc(C, C, R, 0, 6.283); g.stroke();
     // range rings + crosshair
-    g.strokeStyle = G(.13); for (const k of [.25, .5, .75]) { g.beginPath(); g.arc(C, C, R * k, 0, 6.283); g.stroke(); }
+    g.strokeStyle = G(.2); for (const k of [.25, .5, .75]) { g.beginPath(); g.arc(C, C, R * k, 0, 6.283); g.stroke(); }
     g.beginPath(); g.moveTo(C - R, C); g.lineTo(C + R, C); g.moveTo(C, C - R); g.lineTo(C, C + R); g.stroke();
     g.save(); g.setLineDash([2, 5]); g.beginPath(); g.moveTo(C - R * .707, C - R * .707); g.lineTo(C + R * .707, C + R * .707); g.moveTo(C + R * .707, C - R * .707); g.lineTo(C - R * .707, C + R * .707); g.stroke(); g.restore();
     // degree ticks + labels
     g.font = '500 9px "JetBrains Mono", monospace'; g.textAlign = "center"; g.textBaseline = "middle";
     for (let d = 0; d < 360; d += 5) { const a = (d - 90) * Math.PI / 180, l = d % 30 ? 4 : 9;
-      g.strokeStyle = G(d % 30 ? .25 : .5); g.beginPath(); g.moveTo(C + Math.cos(a) * (R + 6), C + Math.sin(a) * (R + 6)); g.lineTo(C + Math.cos(a) * (R + 6 + l), C + Math.sin(a) * (R + 6 + l)); g.stroke();
-      if (d % 30 === 0) { g.fillStyle = "rgba(200,210,220,.55)"; g.fillText(String(d).padStart(3, "0"), C + Math.cos(a) * (R + 24), C + Math.sin(a) * (R + 24)); } }
+      g.strokeStyle = G(d % 30 ? .35 : .65); g.beginPath(); g.moveTo(C + Math.cos(a) * (R + 6), C + Math.sin(a) * (R + 6)); g.lineTo(C + Math.cos(a) * (R + 6 + l), C + Math.sin(a) * (R + 6 + l)); g.stroke();
+      if (d % 30 === 0) { g.fillStyle = "rgba(215,225,232,.75)"; g.fillText(String(d).padStart(3, "0"), C + Math.cos(a) * (R + 24), C + Math.sin(a) * (R + 24)); } }
     // sweep trail
     g.save(); g.beginPath(); g.arc(C, C, R, 0, 6.283); g.clip();
     const tail = 1.3;
