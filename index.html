@@ -121,6 +121,12 @@ section{padding:80px 0}
 .side h4{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
 .side li{list-style:none;font-size:15px;color:var(--text);padding:3px 0}
 .side li small{color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:11.5px;margin-left:6px}
+.proj+.proj{margin-top:80px;padding-top:80px;border-top:1px solid var(--line)}
+.proj.flip .shots{order:2}
+.proj.solo{grid-template-columns:1fr}.proj.solo .info{max-width:720px}
+.proj .shots.n1 .s1{inset:0}.proj .shots.n1{aspect-ratio:1552/780;margin-bottom:0}
+.proj .shots.n2 .s1{inset:0 22% auto 0}.proj .shots.n2 .s2{width:62%;right:0;top:40%}.proj .shots.n2{margin-bottom:60px}
+.info .live.wip i{background:#d4d4d4;box-shadow:none}
 /* coursework */
 .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .course{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:16px 18px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
@@ -206,6 +212,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .nav nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:16px}
   .nav nav a.active::after{display:none}
   .hero .grid,.proj,.log,.about{grid-template-columns:1fr}
+  .proj.flip .shots{order:0}
   .paths{grid-template-columns:1fr}
   .courses{grid-template-columns:1fr 1fr}
   .hero h1{white-space:normal}
@@ -281,28 +288,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <section id="work" style="padding-top:0">
   <div class="wrap">
     <div class="head reveal"><h2>Work</h2></div>
-    <div class="proj reveal">
-      <div class="shots">
-        <div class="shot s1"><div class="chrome"><i></i><i></i><i></i><span>marks-financial-services.vercel.app</span></div><img src="assets/app-market.jpg" alt="Market Trends dashboard with live index performance chart" loading="lazy"></div>
-        <div class="shot s2"><div class="chrome"><i></i><i></i><i></i><span>/tools/monte-carlo</span></div><img src="assets/app-montecarlo.jpg" alt="Monte Carlo simulator running 1,000 simulated outcomes" loading="lazy"></div>
-        <div class="shot s3"><div class="chrome"><i></i><i></i><i></i><span>/stock/NVDA</span></div><img src="assets/app-stock.jpg" alt="Stock detail page with one-year price chart and key stats" loading="lazy"></div>
-      </div>
-      <div class="info">
-        <div class="live"><i></i>LIVE · JUL 2026 – NOW</div>
-        <h3>Marks Investment Analytics</h3>
-        <p>A full-stack personal finance platform running on live market data.</p>
-        <ul class="feat">
-          <li>Market trends &amp; stock pages<span>Yahoo Finance API</span></li>
-          <li>Monte Carlo simulator<span>1,000 simulated paths</span></li>
-          <li>Portfolio builder &amp; compare<span>allocation tools</span></li>
-          <li>Mortgage, budget, retirement, debt<span>10+ calculators</span></li>
-          <li>Accounts &amp; saved data<span>Supabase · Postgres</span></li>
-        </ul>
-        <p style="font-size:14px">Built with AI coding tools; I made the product and architecture decisions and reviewed every change.</p>
-        <div class="tech"><span>Next.js</span><span>TypeScript</span><span>React</span><span>Tailwind</span><span>Supabase</span><span>Vercel</span></div>
-        <div class="btns" style="margin-top:0"><a class="btn hi" href="https://marks-financial-services.vercel.app" target="_blank">Open the app ↗</a><a class="btn" href="https://github.com/JasonMarks22/Marks-Financial-Services" target="_blank">Read the code ↗</a></div>
-      </div>
-    </div>
+    <div id="projects"></div>
   </div>
 </section>
 
@@ -368,10 +354,38 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="toast" id="toast" role="status"></div>
 <footer><div class="wrap"><span>© <span id="yr"></span> Jason Marks · Provo, UT · <a href="tel:+15204424449">(520) 442-4449</a> · <a class="copy-email" href="mailto:jasonvmarks@gmail.com" title="Click to copy">jasonvmarks@gmail.com</a></span><span>Photos: <a href="https://unsplash.com/photos/WRL2FysCfds" target="_blank">Daniel Shapiro</a> &amp; <a href="https://unsplash.com/photos/VQcn7hnJbjE" target="_blank">Danny Burke</a> on Unsplash · <a href="https://github.com/JasonMarks22/jasonmarks22.github.io" target="_blank" style="text-decoration:underline">source</a></span></div></footer>
 
+<script src="assets/projects.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 $("yr").textContent = new Date().getFullYear();
+
+// ---------- projects (data in assets/projects.js) ----------
+(function renderProjects(){
+  const list = window.PROJECTS || [];
+  $("projects").innerHTML = list.map((p, i) => {
+    const shots = (p.shots || []).slice(0, 3);
+    const shotHTML = shots.length ? `<div class="shots n${shots.length}">${shots.map((s, k) => `<div class="shot s${k + 1}"><div class="chrome"><i></i><i></i><i></i><span>${esc(s.label || "")}</span></div><img src="${esc(s.src)}" alt="${esc(s.alt || p.title)}" loading="lazy"></div>`).join("")}</div>` : "";
+    const st = (p.status || "").toUpperCase();
+    const links = (p.links || []).map((l, k) => `<a class="btn${k === 0 ? " hi" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("") + (p.caseStudy ? `<a class="btn" href="${esc(p.caseStudy)}">Read the case study →</a>` : "");
+    return `<div class="proj reveal${shots.length ? "" : " solo"}${i % 2 && shots.length ? " flip" : ""}">${shotHTML}
+      <div class="info">
+        ${st || p.dates ? `<div class="live${st === "LIVE" ? "" : " wip"}"><i></i>${esc([st, (p.dates || "").toUpperCase()].filter(Boolean).join(" · "))}</div>` : ""}
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.summary || "")}</p>
+        ${p.features && p.features.length ? `<ul class="feat">${p.features.map(([a, b]) => `<li>${esc(a)}<span>${esc(b || "")}</span></li>`).join("")}</ul>` : ""}
+        ${p.note ? `<p style="font-size:14px">${esc(p.note)}</p>` : ""}
+        ${p.tech && p.tech.length ? `<div class="tech">${p.tech.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
+        ${links ? `<div class="btns" style="margin-top:0">${links}</div>` : ""}
+      </div></div>`;
+  }).join("");
+})();
+
+// terminal projects command reads the same data
+const projectsText = () => (window.PROJECTS || []).map(p => `<span class="h">${esc(p.title)}</span>  [${esc((p.status || "").toLowerCase())}]
+  ${esc(p.summary || "")}
+  ${esc((p.tech || []).join(" · "))}
+  ${(p.links || []).map(l => `→ <a href="${esc(l.url)}" target="_blank">${esc(l.label.toLowerCase())}</a>`).join("  ")}`).join("\n\n") + `\n<span style="color:var(--muted)">more on the way…</span>`;
 
 // ---------- working terminal ----------
 const out = $("out"), input = $("cmd");
@@ -390,11 +404,7 @@ const C = {
 <span class="b">clear</span>       clear the screen`,
   whoami: () => `Jason Marks. Software developer, Information Systems student at BYU (class of 2028).
 Based in Provo, UT.`,
-  projects: () => `<span class="h">Marks Investment Analytics</span>  [live]
-  Full-stack finance platform: market data, Monte Carlo sim, portfolio tools, 10+ calculators
-  Next.js · TypeScript · React · Supabase · Vercel
-  → <a href="https://marks-financial-services.vercel.app" target="_blank">open app</a>  → <a href="https://github.com/JasonMarks22/Marks-Financial-Services" target="_blank">source</a>
-<span style="color:var(--muted)">more on the way…</span>`,
+  projects: projectsText,
   stack: () => `languages   TypeScript, JavaScript, Python, SQL
 frameworks  React, Next.js, Tailwind
 data        PostgreSQL, Supabase
@@ -445,7 +455,7 @@ fetch("https://api.github.com/users/JasonMarks22/repos?per_page=100&sort=pushed"
   .then(r => { if (!r.ok) throw 0; return r.json(); })
   .then(repos => {
     const own = repos.filter(r => !r.fork);
-    const shown = own.filter(r => r.name.toLowerCase() !== "jasonmarks22");
+    const shown = own.filter(r => !["jasonmarks22", "jasonmarks22.github.io"].includes(r.name.toLowerCase()));
     $("repocount").textContent = shown.length + " public";
     $("repos").innerHTML = shown.map(r => `<a class="repo" href="${r.html_url}" target="_blank"><b>${esc(r.name)}</b><p>${esc(r.description || (r.name.endsWith(".github.io") ? "This website." : "No description yet."))}</p><small>${esc(r.language || "")}${r.language ? " · " : ""}pushed ${ago(r.pushed_at)}</small></a>`).join("") || `<p class="empty">No public repos yet.</p>`;
   })

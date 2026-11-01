@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found · Jason Marks</title>
+<link rel="icon" href="/assets/jason.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;display:grid;place-items:center;background:#cdcdce;color:#36455c;font-family:Inter,system-ui,sans-serif;padding:24px}
+@media(prefers-color-scheme:dark){body{background:#1e2634;color:#ececea}.term{border:1px solid #4a5873}}
+.box{max-width:560px;width:100%}
+h1{font-weight:200;letter-spacing:.16em;text-transform:uppercase;font-size:clamp(30px,6vw,44px);margin-bottom:20px}
+.term{background:#36455c;color:#d4d4d4;border-radius:6px;padding:18px 20px;font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.8;margin-bottom:24px}
+.term b{color:#ececea;font-weight:500}.term .p{color:#9aa3c9}
+a.btn{display:inline-block;font-weight:600;font-size:14px;padding:12px 18px;border-radius:4px;background:#36455c;color:#ececea;text-decoration:none}
+@media(prefers-color-scheme:dark){a.btn{background:#868fb8;color:#1e2634}}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>404</h1>
+  <div class="term"><span class="p">➜ ~</span> <b>cd <span id="path"></span></b><br>cd: no such file or directory</div>
+  <a class="btn" href="/">← Back to jasonmarks22.github.io</a>
+</div>
+<script>document.getElementById("path").textContent = location.pathname;</script>
+</body>
+</html>
