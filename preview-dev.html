@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jason Marks · Software Developer</title>
 <meta name="description" content="Jason Marks. Software developer and Information Systems student at BYU.">
+<meta property="og:title" content="Jason Marks · Software Developer">
+<meta property="og:description" content="Software developer and Information Systems student at BYU. Building full-stack web apps.">
+<meta property="og:image" content="https://jasonmarks22.github.io/assets/og.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/jason.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -61,7 +67,10 @@ html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(30,3
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bg-rgb),.86) 0%,rgba(var(--bg-rgb),.62) 42%,rgba(var(--bg-rgb),.12) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 24%)}
 .hero-bg .wrap{position:relative;z-index:2}
 .hero{padding:110px 0 130px}
-.hero .kicker{font-size:12px;letter-spacing:.42em;color:var(--soft);text-transform:uppercase;margin-bottom:22px}
+.hero .me{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+.hero .me img{width:92px;height:92px;object-fit:cover;border-radius:4px;border:1px solid var(--line2);box-shadow:0 12px 28px -14px rgba(54,69,92,.6)}
+.hero .me .kicker{margin:0}
+.hero .kicker{font-size:12px;line-height:2;letter-spacing:.42em;color:var(--soft);text-transform:uppercase;margin-bottom:22px}
 .hero .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
 .hero h1{font-size:clamp(34px,3.9vw,54px);font-weight:200;letter-spacing:.16em;line-height:1;text-transform:uppercase;white-space:nowrap;margin-bottom:28px}
 .hero .role{font-size:21px;font-weight:400;max-width:500px;line-height:1.45}
@@ -204,7 +213,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <header class="hero">
     <div class="grid">
     <div>
-      <p class="kicker">Software Developer · BYU</p>
+      <div class="me"><img src="assets/jason.jpg" alt="Jason Marks" width="92" height="92"><p class="kicker">Software Developer<br>BYU · Provo, UT</p></div>
       <h1>Jason Marks</h1>
       <p class="role">I build full-stack web apps. Right now that's a live finance platform in Next.js and TypeScript. I'm studying Information Systems at BYU and looking for a Summer 2027 software internship.</p>
       <div class="btns">
