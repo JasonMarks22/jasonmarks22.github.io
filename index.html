@@ -418,19 +418,47 @@ const print = html => { out.insertAdjacentHTML("beforeend", `<div>${html}</div>`
 const C = {
   help: () => `Available commands:
 <span class="b">whoami</span>      who I am
+<span class="b">about</span>       what I want to do next
 <span class="b">projects</span>    what I've built
 <span class="b">stack</span>       languages & tools
+<span class="b">learning</span>    what I'm teaching myself
 <span class="b">experience</span>  where I've worked
 <span class="b">education</span>   school
+<span class="b">interests</span>   life outside of tech
+<span class="b">books</span>       favorite reads
 <span class="b">contact</span>     how to reach me
 <span class="b">resume</span>      open my résumé
 <span class="b">github</span>      open my GitHub
 <span class="b">theme</span>       toggle light / dark mode
 <span class="b">neofetch</span>    system info, but it's me
 <span class="b">clear</span>       clear the screen`,
-  whoami: () => `Jason Marks. Software & data: engineering, analytics, data science.
-Information Systems + Statistics at BYU (class of 2028).
-Based in Provo, UT.`,
+  whoami: () => `Jason Marks
+Information Systems student at BYU, minor in Statistics (class of 2028).
+Originally from Tucson, AZ · based in Provo, UT.
+Plan: work full-time, then earn an MS in Computer Science.
+A builder at heart: software, data projects, and the shop.`,
+  about: () => `I love learning how things work, then using it
+to solve real problems.
+
+<span class="h">want to do</span>   software & data: tools people use,
+             reliable systems, answers from data
+<span class="h">paths</span>        software eng · data eng ·
+             data science · data analytics
+<span class="h">looking for</span>  software & data internships,
+             tech internships, part-time work
+<span class="h">goal</span>         start my career at a company and solve
+             problems that move the business forward`,
+  learning: () => `C++                     self-study
+Linux                   self-study
+AWS Cloud Practitioner  certification`,
+  interests: () => `married · 3D printing · welding · woodworking
+basketball · football · reading (type <span class="b">books</span>)`,
+  books: () => `The Intelligent Investor          Benjamin Graham
+The Psychology of Money           Morgan Housel
+How to Win Friends & Influence People
+                                  Dale Carnegie
+Steve Jobs                        Walter Isaacson
+The Reckoners series              Brandon Sanderson`,
   projects: projectsText,
   stack: () => `languages   Python, SQL, TypeScript, JavaScript
 data        pandas, PostgreSQL, Tableau, Excel modeling
@@ -451,7 +479,7 @@ linkedin  <a href="https://www.linkedin.com/in/jasonmarks10" target="_blank">lin
 github    <a href="https://github.com/JasonMarks22" target="_blank">github.com/JasonMarks22</a>`,
   resume: () => { window.open("Jason_Marks_Resume.pdf", "_blank"); return "opening Jason_Marks_Resume.pdf…"; },
   github: () => { window.open("https://github.com/JasonMarks22", "_blank"); return "opening github.com/JasonMarks22…"; },
-  ls: () => `<span class="d">projects</span>  <span class="d">experience</span>  <span class="d">coursework</span>  resume.pdf  contact.txt`,
+  ls: () => `<span class="d">projects</span>  <span class="d">coursework</span>  <span class="d">experience</span>  about.txt  books.txt  resume.pdf  contact.txt`,
   pwd: () => `/home/jason`,
   uname: () => `Linux portfolio 6.8.0-45-generic #45-Ubuntu SMP x86_64 GNU/Linux`,
   neofetch: () => `<span class="p">jason</span>@<span class="p">portfolio</span>
@@ -459,8 +487,12 @@ github    <a href="https://github.com/JasonMarks22" target="_blank">github.com/J
 <span class="p">Name</span>: Jason Marks
 <span class="p">Focus</span>: Software, data engineering, analytics, data science
 <span class="p">School</span>: BYU · Information Systems + Statistics (2028)
-<span class="p">Location</span>: Provo, UT
+<span class="p">Next</span>: MS in Computer Science
+<span class="p">Home</span>: Tucson, AZ → Provo, UT
 <span class="p">Languages</span>: Python, SQL, TypeScript, JavaScript
+<span class="p">Data</span>: pandas, PostgreSQL, Tableau
+<span class="p">Learning</span>: C++, Linux, AWS
+<span class="p">Hobbies</span>: 3D printing, welding, woodworking, hoops
 <span class="p">Shell</span>: bash 5.2
 <span class="p">Uptime</span>: building since 2021`,
   date: () => new Date().toString(),
@@ -484,7 +516,7 @@ input.addEventListener("keydown", e => {
   else if (e.key === "Tab") { const m = Object.keys(C).filter(k => k.startsWith(input.value.toLowerCase())); if (m.length === 1) input.value = m[0]; e.preventDefault(); }
 });
 $("term").addEventListener("click", e => { if (!e.target.closest("a,button")) input.focus({preventScroll: true}); });
-["whoami", "projects", "stack", "contact", "help"].forEach(c => { const b = document.createElement("button"); b.textContent = c; b.onclick = () => { run(c); input.focus({preventScroll: true}); }; $("chips").appendChild(b); });
+["whoami", "about", "projects", "stack", "contact", "help"].forEach(c => { const b = document.createElement("button"); b.textContent = c; b.onclick = () => { run(c); input.focus({preventScroll: true}); }; $("chips").appendChild(b); });
 print(`Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-45-generic x86_64)
 
 <span style="color:var(--muted)"> * Portfolio:  https://jasonmarks22.github.io
