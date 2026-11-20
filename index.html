@@ -46,15 +46,6 @@ html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(30,3
 .icon-btn{width:34px;height:34px;display:inline-grid;place-items:center;border:1px solid var(--line2);background:var(--btnbg);color:var(--text);border-radius:4px;cursor:pointer;font-size:15px}
 .icon-btn:hover{border-color:var(--text)}
 #menuBtn{display:none}
-/* built by hand */
-.shop-lede{max-width:62ch;margin:-12px 0 28px;color:var(--soft)}
-.shop{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:300px;gap:20px 16px;grid-template-areas:"f f c" "f f s" "a a s" "p b w"}
-.shop figure{margin:0;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;min-height:0}
-.shop .ph{position:relative;display:block;padding:0;border:1px solid var(--line);background:var(--bg2);cursor:zoom-in;overflow:hidden;border-radius:3px;min-height:0}
-.shop .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.shop .ph:focus-visible{outline:2px solid var(--hi);outline-offset:2px}
-.shop figcaption{font-size:13.5px;color:var(--muted)}
-@media(max-width:760px){.shop{grid-template-columns:1fr;grid-template-areas:none;grid-auto-rows:auto}.shop figure{grid-area:auto!important}.shop .ph{aspect-ratio:4/3}}
 /* lightbox */
 .lightbox{position:fixed;inset:0;z-index:100;background:rgba(20,26,36,.88);display:none;place-items:center;padding:40px;cursor:zoom-out}
 .lightbox.open{display:grid}
@@ -244,7 +235,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="nav">
   <div class="wrap">
     <a href="#" class="logo">jason<b>.</b>marks</a>
-    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#shop">Shop</a><a href="#stack">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
     <div class="right">
       <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
       <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -352,22 +343,6 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
         <div class="course"><b>Statistical Modeling I</b><span>STAT 230, BYU</span></div>
         <div class="course"><b>Calculus III (Multivariable)</b><span>MATH 215, BYU–Idaho</span></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section id="shop" style="padding-top:0">
-  <div class="wrap">
-    <div class="head"><h2>Built by hand</h2></div>
-    <p class="shop-lede">When I'm not writing code I'm in the shop: cut steel, hardwood, and parts I print on a Bambu Lab A1. Next I'm starting electronics projects with Arduino and ESP32 boards.</p>
-    <div class="shop">
-      <figure style="grid-area:f"><button type="button" class="ph" aria-label="Enlarge photo: Viktor Frankl quote"><img src="assets/shop/frankl-quote.jpg" alt="Cut-steel Viktor Frankl quote in a walnut frame" loading="lazy"></button><figcaption>Viktor Frankl quote, cut steel in a walnut frame</figcaption></figure>
-      <figure style="grid-area:c"><button type="button" class="ph" aria-label="Enlarge photo: chess table"><img src="assets/shop/chess-table.jpg" alt="End-grain chess board table on a black steel base" loading="lazy"></button><figcaption>Chess table, end-grain board on a steel base</figcaption></figure>
-      <figure style="grid-area:s"><button type="button" class="ph" aria-label="Enlarge photo: steel signs"><img src="assets/shop/steel-signs.jpg" alt="A row of painted cut-steel signs on a shop table" loading="lazy"></button><figcaption>Cut-steel signs, welded and painted</figcaption></figure>
-      <figure style="grid-area:a"><button type="button" class="ph" aria-label="Enlarge photo: America sign"><img src="assets/shop/america-sign.jpg" alt="Red, white and blue cut-steel America sign" loading="lazy"></button><figcaption>America sign, painted steel</figcaption></figure>
-      <figure style="grid-area:p"><button type="button" class="ph" aria-label="Enlarge photo: 3D-printed stands"><img src="assets/shop/printed-stands.jpg" alt="Black 3D-printed headphone stand and phone stand" loading="lazy"></button><figcaption>3D-printed headphone and phone stands</figcaption></figure>
-      <figure style="grid-area:b"><button type="button" class="ph" aria-label="Enlarge photo: butcher block"><img src="assets/shop/butcher-block.jpg" alt="Glued-up hardwood butcher block on a workbench" loading="lazy"></button><figcaption>Hardwood butcher block glue-up</figcaption></figure>
-      <figure style="grid-area:w"><button type="button" class="ph" aria-label="Enlarge photo: light switch extender"><img src="assets/shop/switch-extender.jpg" alt="Black 3D-printed light switch extender on a wall plate" loading="lazy"></button><figcaption>3D-printed light switch extender</figcaption></figure>
     </div>
   </div>
 </section>
@@ -588,9 +563,6 @@ const lb = $("lightbox");
 document.querySelectorAll(".shot").forEach(sh => sh.addEventListener("click", () => {
   const img = sh.querySelector("img"); $("lbImg").src = img.src; $("lbImg").alt = img.alt; $("lbCap").textContent = sh.querySelector(".chrome span").textContent; lb.classList.add("open"); }));
 
-document.querySelectorAll(".shop .ph").forEach(b => b.addEventListener("click", () => {
-  const img = b.querySelector("img"); $("lbImg").src = img.src; $("lbImg").alt = img.alt;
-  $("lbCap").textContent = b.parentElement.querySelector("figcaption").textContent; lb.classList.add("open"); }));
 lb.addEventListener("click", () => lb.classList.remove("open"));
 addEventListener("keydown", e => { if (e.key === "Escape") lb.classList.remove("open"); });
 
