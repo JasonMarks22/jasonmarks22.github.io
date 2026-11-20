@@ -75,7 +75,7 @@ html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(18,2
 .hero-bg::before{content:"";position:absolute;inset:0;background:url("assets/bg-utah-peaks.jpg") center 62%/cover no-repeat;filter:saturate(1.05) contrast(1.02)}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bg-rgb),.86) 0%,rgba(var(--bg-rgb),.62) 42%,rgba(var(--bg-rgb),.12) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 24%)}
 .hero-bg .wrap{position:relative;z-index:2}
-.hero{padding:110px 0 130px}
+.hero{padding:72px 0 72px}
 .hero .me{display:flex;align-items:center;gap:18px;margin-bottom:26px}
 .hero .me img{width:92px;height:92px;object-fit:cover;border-radius:4px;border:1px solid var(--line2)}
 .hero .me .kicker{margin:0}
@@ -114,8 +114,8 @@ html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(18,2
 
 
 /* sections */
-section{padding:80px 0}
-.head{margin-bottom:36px;display:flex;align-items:baseline;gap:16px}
+section{padding:56px 0}
+.head{margin-bottom:24px;display:flex;align-items:baseline;gap:16px}
 .head h2{font-size:24px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
 .head::after{content:"";flex:1;height:1px;background:var(--line)}
 .head h2::after{content:"";display:block;width:32px;height:3px;background:var(--accent);margin-top:8px}
@@ -133,7 +133,7 @@ section{padding:80px 0}
 .side h4{font-size:13.5px;color:var(--muted);font-weight:600;margin-bottom:8px}
 .side li{list-style:none;font-size:15px;color:var(--text);padding:3px 0}
 .side li small{color:var(--muted);font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;margin-left:6px}
-.proj+.proj{margin-top:80px;padding-top:80px;border-top:1px solid var(--line)}
+.proj+.proj{margin-top:56px;padding-top:56px;border-top:1px solid var(--line)}
 .proj.flip .shots{order:2}
 .proj.solo{grid-template-columns:1fr}.proj.solo .info{max-width:720px}
 .proj .shots.n1 .s1{position:relative;inset:auto;width:100%}.proj .shots.n1{aspect-ratio:auto;margin-bottom:0;align-self:start}
@@ -202,6 +202,10 @@ section{padding:80px 0}
 .row li{padding-left:16px;position:relative;margin-bottom:5px}
 .row li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--accent)}
 
+/* repos + skills side by side */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.pair .skills{grid-template-columns:1fr 1fr;gap:20px 28px}
+@media(max-width:960px){.pair{grid-template-columns:1fr}}
 /* skills */
 .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
 .skills h4{font-size:13.5px;color:var(--muted);font-weight:600;margin-bottom:14px}
@@ -209,7 +213,7 @@ section{padding:80px 0}
 .skills li{font-family:var(--display);font-weight:500;font-size:17px;padding:7px 0;border-bottom:1px solid var(--line)}
 
 /* contact */
-.contact{margin:40px 0 90px;padding:56px;border-radius:6px;position:relative;overflow:hidden;color:#ececea}
+.contact{margin:24px 0 56px;padding:48px;border-radius:6px;position:relative;overflow:hidden;color:#ececea}
 .contact::before{content:"";position:absolute;inset:0;background:url("assets/bg-wasatch.jpg") center 72%/cover no-repeat}
 .contact::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,34,58,.94) 0%,rgba(20,34,58,.72) 50%,rgba(20,34,58,.2) 100%)}
 .contact>*{position:relative;z-index:2}
@@ -312,22 +316,21 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </section>
 
 <section id="activity" style="padding-top:0">
-  <div class="wrap">
+  <div class="wrap pair">
+    <div>
     <div class="head"><h2>Repositories</h2></div>
     <div class="log">
       <div class="card"><h4><span>$ ls ~/repos</span><span id="repocount"></span></h4><div id="repos"><p class="empty">fetching repos…</p></div></div>
     </div>
-  </div>
-</section>
-
-<section id="stack" style="padding-top:0">
-  <div class="wrap">
+    </div>
+    <div id="stack">
     <div class="head"><h2>Skills</h2></div>
     <div class="skills">
       <div><h4>Languages</h4><ul><li>Python</li><li>SQL</li><li>TypeScript</li><li>JavaScript</li></ul></div>
       <div><h4>Data &amp; analytics</h4><ul><li>pandas</li><li>PostgreSQL</li><li>Tableau</li><li>Excel modeling</li></ul></div>
       <div><h4>Software</h4><ul><li>React</li><li>Next.js</li><li>Supabase</li></ul></div>
       <div><h4>Tools</h4><ul><li>Git &amp; GitHub</li><li>Vercel CI/CD</li></ul></div>
+    </div>
     </div>
   </div>
 </section>
