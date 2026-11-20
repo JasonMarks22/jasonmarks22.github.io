@@ -15,37 +15,48 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 html{color-scheme:light}
-:root{--bg-rgb:205,205,206;--btnbg:#ececea;--btnbg-h:#ececea;--bg:#cdcdce;--bg2:#ececea;--line:#b5b7bc;--line2:#a2a6b0;--display:"IBM Plex Sans",system-ui,sans-serif;--text:#36455c;--soft:#46577f;--muted:#5d6890;--hi:#526492;--navy:#36455c;--ok:#b9c2e6;--blue:#b9c2e6}
+:root{--bg-rgb:246,248,250;--btnbg:#ffffff;--btnbg-h:#eef4f1;--bg:#f6f8fa;--bg2:#ffffff;--line:#dbe2e9;--line2:#c3ccd6;--display:"IBM Plex Sans",system-ui,sans-serif;--text:#14223a;--soft:#3b4a62;--muted:#5b687d;--hi:#1d6b52;--accent:#1d6b52;--accent-soft:#e6f1ec;--navy:#14223a;--ok:#b9c2e6;--blue:#b9c2e6}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 .mono{font-family:"JetBrains Mono",monospace}
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
-::selection{background:#868fb8;color:#fff}
+::selection{background:var(--accent);color:#fff}
 html[data-theme=dark]{color-scheme:dark}
-html[data-theme=dark]:root{--bg-rgb:30,38,52;--bg:#1e2634;--bg2:#273142;--btnbg:#273142;--btnbg-h:#32405a;--line:#36435a;--line2:#4a5873;--text:#ececea;--soft:#d4d4d4;--muted:#9aa3c9;--navy:#868fb8}
-html[data-theme=dark] .btn.hi{color:#1e2634}
+html[data-theme=dark]:root{--bg-rgb:18,26,38;--bg:#121a26;--bg2:#1a2433;--btnbg:#1a2433;--btnbg-h:#22303f;--line:#2a3647;--line2:#3a4a5f;--text:#e8edf3;--soft:#c3ccd8;--muted:#93a0b3;--hi:#6cc8a0;--accent:#6cc8a0;--accent-soft:#17302a;--navy:#6cc8a0}
+html[data-theme=dark] .btn.hi{color:#0f1a16}
 html[data-theme=dark] .term{border-color:#46577f}
 html[data-theme=dark] .hero-bg::before{filter:saturate(.55) brightness(.85)}
-html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(30,38,52,.9) 0%,rgba(30,38,52,.6) 42%,rgba(30,38,52,.15) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(30,38,52,0) 24%)}
+html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(18,26,38,.92) 0%,rgba(18,26,38,.62) 42%,rgba(18,26,38,.15) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(18,26,38,0) 24%)}
 *{transition-property:background-color,border-color,color;transition-duration:.25s}
-:focus-visible{outline:2px solid #868fb8;outline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 [id]{scroll-margin-top:72px}
 
 /* nav */
 .nav{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px;font-size:14px}
 .logo{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px}
-.logo b{color:#868fb8}
+.logo b{color:var(--accent)}
 .nav nav{display:flex;gap:26px;color:var(--soft)}
 .nav nav a{position:relative;padding:4px 0}
 .nav nav a:hover,.nav nav a.active{color:var(--text)}
-.nav nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--text)}
+.nav nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent)}
 .nav .right{display:flex;align-items:center;gap:10px}
 .icon-btn{width:34px;height:34px;display:inline-grid;place-items:center;border:1px solid var(--line2);background:var(--btnbg);color:var(--text);border-radius:4px;cursor:pointer;font-size:15px}
 .icon-btn:hover{border-color:var(--text)}
 #menuBtn{display:none}
+/* hobbies */
+.hob-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.hob-photos figure{margin:0}
+.hob-photos img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);border-radius:3px}
+.hob-photos figcaption{font-size:13.5px;color:var(--muted);margin-top:8px}
+.hob-list{display:grid;grid-template-columns:repeat(5,1fr);gap:0 32px;border-top:1px solid var(--line)}
+.hob-list div{padding:16px 0;border-bottom:1px solid var(--line)}
+.hob-list h3{font-size:17px;font-weight:600;color:var(--text);margin-bottom:4px}
+.hob-list p{font-size:14.5px;color:var(--soft);line-height:1.5}
+@media(max-width:960px){.hob-list{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.hob-photos{grid-template-columns:1fr}.hob-list{grid-template-columns:1fr}}
 /* lightbox */
 .lightbox{position:fixed;inset:0;z-index:100;background:rgba(20,26,36,.88);display:none;place-items:center;padding:40px;cursor:zoom-out}
 .lightbox.open{display:grid}
@@ -61,23 +72,23 @@ html[data-theme=dark] .hero-bg::after{background:linear-gradient(90deg,rgba(30,3
 
 /* hero */
 .hero-bg{position:relative;overflow:hidden}
-.hero-bg::before{content:"";position:absolute;inset:0;background:url("assets/bg-utah-peaks.jpg") center 62%/cover no-repeat;filter:saturate(.7) contrast(1.02)}
+.hero-bg::before{content:"";position:absolute;inset:0;background:url("assets/bg-utah-peaks.jpg") center 62%/cover no-repeat;filter:saturate(1.05) contrast(1.02)}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bg-rgb),.86) 0%,rgba(var(--bg-rgb),.62) 42%,rgba(var(--bg-rgb),.12) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(var(--bg-rgb),0) 24%)}
 .hero-bg .wrap{position:relative;z-index:2}
 .hero{padding:110px 0 130px}
 .hero .me{display:flex;align-items:center;gap:18px;margin-bottom:26px}
 .hero .me img{width:92px;height:92px;object-fit:cover;border-radius:4px;border:1px solid var(--line2)}
 .hero .me .kicker{margin:0}
-.hero .kicker{font-size:15px;line-height:1.6;font-weight:500;color:var(--soft);margin-bottom:16px}
+.hero .kicker{font-size:15px;line-height:1.6;font-weight:600;color:var(--accent);margin-bottom:16px}
 .hero .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
 .hero h1{font-size:clamp(38px,4.4vw,60px);font-weight:600;letter-spacing:-.02em;line-height:1;white-space:nowrap;margin-bottom:24px}
 .hero .role{font-size:21px;font-weight:400;max-width:500px;line-height:1.45}
 .hero .role em{font-style:normal;color:var(--soft)}
 .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
 .btn{font-size:14px;font-weight:600;padding:12px 18px;border:1px solid var(--line2);background:var(--btnbg);border-radius:4px;transition:.15s;display:inline-flex;gap:8px;align-items:center}
-.btn:hover{border-color:var(--text);background:var(--btnbg-h)}
-.btn.hi{background:var(--navy);border-color:var(--navy);color:#ececea}
-.btn.hi:hover{background:#526492;border-color:#526492}
+.btn:hover{border-color:var(--accent);background:var(--btnbg-h)}
+.btn.hi{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.hi:hover{background:#155540;border-color:#155540}
 
 /* terminal */
 .term{--muted:#8a93b8;--ok:#b9c2e6;--blue:#a9b4dc;background:#253041;color:#d4d4d4;border:1px solid #1b2330;border-radius:10px 10px 6px 6px;overflow:hidden;font-family:"JetBrains Mono","Ubuntu Mono",monospace;font-size:13.5px}
@@ -107,6 +118,7 @@ section{padding:80px 0}
 .head{margin-bottom:36px;display:flex;align-items:baseline;gap:16px}
 .head h2{font-size:24px;font-weight:600;letter-spacing:-.01em;color:var(--text)}
 .head::after{content:"";flex:1;height:1px;background:var(--line)}
+.head h2::after{content:"";display:block;width:32px;height:3px;background:var(--accent);margin-top:8px}
 
 /* about */
 .about{display:grid;grid-template-columns:1.35fr 1fr;gap:56px}
@@ -146,7 +158,7 @@ section{padding:80px 0}
 .shots{position:relative;aspect-ratio:1552/744;margin-bottom:76px}
 .shot{position:absolute;border-radius:5px;overflow:hidden;border:1px solid var(--line2);background:var(--bg2);transition:transform .4s ease;cursor:zoom-in}
 .shot img{display:block;width:100%;height:auto}
-.shot .chrome{display:flex;gap:6px;align-items:center;padding:8px 10px;background:#36455c;border-bottom:1px solid #36455c;font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;color:var(--muted)}
+.shot .chrome{display:flex;gap:6px;align-items:center;padding:8px 10px;background:#14223a;border-bottom:1px solid #14223a;font-family:"IBM Plex Sans",sans-serif;font-size:10.5px;color:var(--muted)}
 .shot .chrome i{width:8px;height:8px;border-radius:50%;background:#526492}
 .shot .chrome span{margin-left:8px;color:#d4d4d4}
 .shot.s1{inset:0 18% auto 0;z-index:3}
@@ -155,7 +167,7 @@ section{padding:80px 0}
 .shots:hover .s2{transform:translate(10px,-6px)}.shots:hover .s3{transform:translate(-8px,10px)}
 .info h3{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.05;margin-bottom:10px}
 .info .live{display:inline-flex;gap:7px;align-items:center;font-size:13.5px;font-weight:500;color:var(--soft);margin-bottom:16px}
-.info .live i{width:7px;height:7px;border-radius:50%;background:#868fb8;box-shadow:0 0 0 3px rgba(134,143,184,.25)}
+.info .live i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .info p{color:var(--soft);margin-bottom:14px;font-size:16px}
 .feat{list-style:none;margin:20px 0;border-top:1px solid var(--line)}
 .feat li{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
@@ -175,7 +187,7 @@ section{padding:80px 0}
 .commit .when{font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;color:var(--muted);white-space:nowrap}
 .repo{display:block;padding:14px 0;border-bottom:1px dashed var(--line)}
 .repo:last-child{border:none}
-.repo b{font-family:var(--display);font-weight:600;font-size:16px}.repo:hover b{color:#526492;text-decoration:underline}
+.repo b{font-family:var(--display);font-weight:600;font-size:16px}.repo:hover b{color:var(--accent);text-decoration:underline}
 .repo p{color:var(--soft);font-size:14px}
 .repo small{font-family:"IBM Plex Sans",sans-serif;color:var(--muted);font-size:11.5px}
 .empty{color:var(--muted);font-size:14px}
@@ -188,7 +200,7 @@ section{padding:80px 0}
 .row .org{color:var(--soft);font-size:15px;margin-top:2px}
 .row ul{list-style:none;color:var(--soft);font-size:15px}
 .row li{padding-left:16px;position:relative;margin-bottom:5px}
-.row li::before{content:"→";position:absolute;left:-2px;color:var(--muted);font-size:12px;top:3px}
+.row li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;background:var(--accent)}
 
 /* skills */
 .skills{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
@@ -198,8 +210,8 @@ section{padding:80px 0}
 
 /* contact */
 .contact{margin:40px 0 90px;padding:56px;border-radius:6px;position:relative;overflow:hidden;color:#ececea}
-.contact::before{content:"";position:absolute;inset:0;background:url("assets/bg-wasatch.jpg") center 72%/cover no-repeat;filter:saturate(.6)}
-.contact::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(54,69,92,.94) 0%,rgba(54,69,92,.7) 50%,rgba(54,69,92,.2) 100%)}
+.contact::before{content:"";position:absolute;inset:0;background:url("assets/bg-wasatch.jpg") center 72%/cover no-repeat}
+.contact::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,34,58,.94) 0%,rgba(20,34,58,.72) 50%,rgba(20,34,58,.2) 100%)}
 .contact>*{position:relative;z-index:2}
 .contact .head h2{color:#d4d4d4}.contact .head::after{background:rgba(236,236,234,.25)}
 .contact p{color:#ececea;font-size:18px;margin:0 0 26px;max-width:560px}
@@ -235,7 +247,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <div class="nav">
   <div class="wrap">
     <a href="#" class="logo">jason<b>.</b>marks</a>
-    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+    <nav><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Skills</a><a href="#experience">Experience</a><a href="#hobbies">Hobbies</a><a href="#contact">Contact</a></nav>
     <div class="right">
       <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
       <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -253,7 +265,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       <div class="btns">
         <a class="btn" href="https://github.com/JasonMarks22" target="_blank">GitHub ↗</a>
         <a class="btn" href="https://www.linkedin.com/in/jasonmarks10" target="_blank">LinkedIn ↗</a>
-        <a class="btn" href="Jason_Marks_Resume.pdf" target="_blank">Résumé ↗</a>
+        <a class="btn hi" href="Jason_Marks_Resume.pdf" target="_blank">Résumé ↗</a>
       </div>
     </div>
 
@@ -285,6 +297,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
       <div class="side">
         <div class="grp"><h4>Looking for</h4><ul><li>Software &amp; data internships</li><li>Tech internships</li><li>Part-time work</li></ul></div>
         <div class="grp"><h4>Learning now</h4><ul><li>C++ <small>self-study</small></li><li>Linux <small>self-study</small></li><li>AWS Cloud Practitioner <small>certification</small></li></ul></div>
+        <div class="grp"><h4>Also</h4><ul><li>Eagle Scout</li><li>Mongolian <small>advanced</small></li></ul></div>
         <div class="grp"><h4>Next</h4><ul><li>B.S. Information Systems <small>2028</small></li><li>M.S. Computer Science <small>planned</small></li></ul></div>
       </div>
     </div>
@@ -311,10 +324,10 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <div class="wrap">
     <div class="head"><h2>Skills</h2></div>
     <div class="skills">
-      <div><h4>Languages</h4><ul><li>Python</li><li>SQL</li><li>TypeScript</li><li>JavaScript</li></ul></div>
-      <div><h4>Data &amp; analytics</h4><ul><li>pandas</li><li>PostgreSQL</li><li>Tableau</li><li>Excel modeling</li></ul></div>
-      <div><h4>Software</h4><ul><li>React</li><li>Next.js</li><li>Supabase</li></ul></div>
-      <div><h4>Tools</h4><ul><li>Git &amp; GitHub</li><li>Vercel CI/CD</li></ul></div>
+      <div><h4>Development</h4><ul><li>Python</li><li>JavaScript</li><li>TypeScript</li><li>React / Next.js</li><li>Bootstrap</li></ul></div>
+      <div><h4>Data &amp; analytics</h4><ul><li>SQL / PostgreSQL</li><li>pandas</li><li>Supabase</li><li>Tableau</li><li>Microsoft Excel</li></ul></div>
+      <div><h4>AI</h4><ul><li>AI-assisted development (Claude Code)</li><li>Claude skills and AI workflows</li></ul></div>
+      <div><h4>Other tools</h4><ul><li>Git / GitHub</li><li>Vercel</li><li>Xero</li><li>Microsoft Office</li></ul></div>
     </div>
   </div>
 </section>
@@ -351,14 +364,34 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <div class="wrap">
     <div class="head"><h2>Experience</h2></div>
     <div class="xp">
-      <div class="row"><div class="when">Apr 2026 – now</div><div><h3>Accounting Intern</h3><div class="org">Reef Capital Partners, Lehi, Utah</div></div>
-        <ul><li>Consolidate financials across 50+ entities</li><li>Maintain records for 700+ investors</li></ul></div>
-      <div class="row"><div class="when">Aug 2025 – now</div><div><h3>Accountant 1</h3><div class="org">BYU Dining Services, Provo, Utah</div></div>
-        <ul><li>Built Excel models that automate recurring reports</li><li>Audits across 15 locations cut misstatements $100K+/qtr</li></ul></div>
-      <div class="row"><div class="when">May 2023 – Jun 2025</div><div><h3>Volunteer &amp; ESL Teacher</h3><div class="org">Ulaanbaatar, Mongolia</div></div>
-        <ul><li>Taught English to hundreds of students</li><li>Advanced Mongolian speaker</li></ul></div>
-      <div class="row"><div class="when">Expected Apr 2028</div><div><h3>B.S. Information Systems</h3><div class="org">BYU Marriott School, minor in Statistics</div></div>
-        <ul><li>GPA 3.82</li></ul></div>
+      <div class="row"><div class="when">Apr 2026 – present</div><div><h3>Accounting Intern</h3><div class="org">Reef Capital Partners, Lehi, Utah</div></div>
+        <ul><li>Automated weekly Xero bank uploads with the tech team using SQL, data cleaning and API checks, saving 4 hours a week</li><li>Automated reconciliation PDF cleanup in Excel and Google Drive uploads with a Claude skill, saving 10 hours a month</li><li>Consolidated financial data across 50+ entities and properties to support reporting and analysis</li><li>Managed investment records for 700+ investors in proprietary data systems</li></ul></div>
+      <div class="row"><div class="when">Aug 2025 – present</div><div><h3>Accountant 1</h3><div class="org">BYU Dining Services, Provo, Utah</div></div>
+        <ul><li>Analyzed inventory reports to audit 15 dining locations, reducing misstatements by $100,000+ a quarter</li><li>Automated 4 monthly journal entries with Claude skills and an AI workflow, saving 5 hours a month</li><li>Built Excel models that automate recurring financial reports</li><li>Resolved invoice discrepancies with suppliers, securing $3,000+ in credits a quarter</li></ul></div>
+      <div class="row"><div class="when">May 2023 – Jun 2025</div><div><h3>Volunteer Representative &amp; ESL Teacher</h3><div class="org">The Church of Jesus Christ of Latter-day Saints, Ulaanbaatar, Mongolia</div></div>
+        <ul><li>Taught American Conversational English, designing lesson plans for hundreds of students</li><li>Mentored 3 new volunteers through their development and cultural integration</li><li>Coordinated 300+ hours of community service projects</li></ul></div>
+      <div class="row"><div class="when">Aug 2021 – May 2022</div><div><h3>Production Engineer</h3><div class="org">Cooksy (startup), Tucson, Arizona</div></div>
+        <ul><li>Architected the manufacturing and assembly workflow for a smart cooking assistant</li><li>Worked with executive leadership to build Design for Manufacturing into future products</li></ul></div>
+      <div class="row"><div class="when">Expected Apr 2028</div><div><h3>B.S. Information Systems</h3><div class="org">BYU Marriott School of Business, minor in Statistics</div></div>
+        <ul><li>GPA 3.82</li><li>Vice President of BYU Trivia Club</li><li>Member of the Association for Information Systems and AI in Business Society</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="hobbies" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><h2>Outside of work</h2></div>
+    <div class="hob-photos">
+      <figure><img src="assets/hobbies/woodworking.jpg" alt="End-grain chess board table on a black steel base" loading="lazy"><figcaption>Chess table I built: hardwood top, welded steel base</figcaption></figure>
+      <figure><img src="assets/hobbies/welding.jpg" alt="A row of painted cut-steel signs on a shop table" loading="lazy"><figcaption>Cut-steel signs, welded and painted</figcaption></figure>
+      <figure><img src="assets/hobbies/printing.jpg" alt="3D-printed headphone stand and phone stand on a desk" loading="lazy"><figcaption>3D-printed headphone and phone stands</figcaption></figure>
+    </div>
+    <div class="hob-list">
+      <div><h3>Welding</h3><p>Cutting, welding and finishing steel signs, bases and frames.</p></div>
+      <div><h3>3D printing</h3><p>Printing on a Bambu Lab A1 and designing my own parts.</p></div>
+      <div><h3>Electronics</h3><p>Building a home lab and home server, and working on electronics projects for fun.</p></div>
+      <div><h3>Woodworking</h3><p>Furniture and shop projects, like an end-grain chess table and butcher blocks.</p></div>
+      <div><h3>Reading</h3><p>Finance, psychology and all kinds of books. Favorites include <em>The Psychology of Money</em> and <em>The Intelligent Investor</em>.</p></div>
     </div>
   </div>
 </section>
@@ -458,13 +491,14 @@ How to Win Friends & Influence People
 Steve Jobs                        Walter Isaacson
 The Reckoners series              Brandon Sanderson`,
   projects: projectsText,
-  stack: () => `languages   Python, SQL, TypeScript, JavaScript
-data        pandas, PostgreSQL, Tableau, Excel modeling
-software    React, Next.js, Supabase
-tools       Git, GitHub, Vercel`,
-  experience: () => `2026–now   Accounting Intern · Reef Capital Partners
-2025–now   Accountant 1 · BYU Dining Services
-2023–2025  Volunteer & ESL Teacher · Ulaanbaatar, Mongolia`,
+  stack: () => `development  Python, JavaScript, TypeScript, React / Next.js, Bootstrap
+data         SQL / PostgreSQL, pandas, Supabase, Tableau, Excel
+ai           Claude Code, Claude skills and AI workflows
+tools        Git / GitHub, Vercel, Xero, Microsoft Office`,
+  experience: () => `2026–now   Accounting Intern, Reef Capital Partners
+2025–now   Accountant 1, BYU Dining Services
+2023–2025  Volunteer Representative & ESL Teacher, Mongolia
+2021–2022  Production Engineer, Cooksy (startup)`,
   education: () => `B.S. Information Systems, minor in Statistics
 Brigham Young University · expected April 2028 · GPA 3.82
 courses: Data Structures & Algorithms, Algorithm Design, C,
@@ -490,7 +524,7 @@ github    <a href="https://github.com/JasonMarks22" target="_blank">github.com/J
 <span class="p">Languages</span>: Python, SQL, TypeScript, JavaScript
 <span class="p">Data</span>: pandas, PostgreSQL, Tableau
 <span class="p">Learning</span>: C++, Linux, AWS
-<span class="p">Hobbies</span>: 3D printing, welding, woodworking, hoops
+<span class="p">Hobbies</span>: welding, 3D printing, electronics, woodworking, reading
 <span class="p">Shell</span>: bash 5.2
 <span class="p">Uptime</span>: building since 2021`,
   date: () => new Date().toString(),
